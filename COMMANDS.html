@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aastrika Automation Commands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#17283C; --navy-300:#2D3E54; --navy-100:#7E8A9A; --navy-50:#BEC5CE;
+  --teal:#1E8F8E; --teal-600:#186E6E; --teal-50:#E3F7F6; --teal-100:#B8ECE9;
+  --gold:#F0A500; --gold-700:#9A6800; --gold-50:#FEF6E0;
+  --page:#F6F7F9; --surface:#FFFFFF; --border:#D8DEE5;
+  --text:#0D1218; --muted:#7C8696;
+  --code-bg:#17283C; --code-text:#E8EDF2;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#0F1722; --surface:#17283C; --border:#2D3E54;
+    --text:#E8EDF2; --muted:#9BA6B5; --navy:#E8EDF2; --navy-300:#BEC5CE;
+    --code-bg:#0B1320; --code-text:#E8EDF2; --teal-50:#12302F; --gold-50:#2E2410;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0F1722; --surface:#17283C; --border:#2D3E54;
+  --text:#E8EDF2; --muted:#9BA6B5; --navy:#E8EDF2; --navy-300:#BEC5CE;
+  --code-bg:#0B1320; --code-text:#E8EDF2; --teal-50:#12302F; --gold-50:#2E2410;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--page); color:var(--text);
+  font:400 16px/1.6 Inter,"Open Sans",system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.shell{display:grid; grid-template-columns:260px minmax(0,1fr); gap:32px;
+  max-width:1280px; margin:0 auto; padding:0 24px}
+/* sidebar */
+aside{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  padding:28px 0 40px; border-right:1px solid var(--border)}
+aside h2{font:700 13px/1 Inter; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 12px}
+#filter{width:100%; padding:8px 10px; margin-bottom:16px; border:1px solid var(--border);
+  border-radius:6px; background:var(--surface); color:var(--text); font:400 14px Inter}
+#filter:focus{outline:2px solid var(--teal); outline-offset:2px}
+nav{display:flex; flex-direction:column; gap:1px; padding-right:16px}
+nav a{color:var(--navy-300); text-decoration:none; padding:5px 10px; border-radius:6px;
+  font-size:14px; border-left:2px solid transparent}
+nav a.lvl3{padding-left:22px; font-size:13px; color:var(--muted)}
+nav a:hover{background:var(--teal-50); color:var(--teal-600)}
+nav a.active{border-left-color:var(--teal); color:var(--teal-600); font-weight:600}
+nav a[hidden]{display:none}
+/* content */
+main{padding:28px 0 96px; min-width:0}
+h1{font:700 40px/1.2 Inter; color:var(--navy); margin:0 0 8px; letter-spacing:-.02em}
+h2{font:600 28px/1.3 Inter; color:var(--navy); margin:56px 0 4px;
+  padding-bottom:8px; border-bottom:2px solid var(--teal); scroll-margin-top:20px}
+h3{font:600 20px/1.35 Inter; color:var(--navy); margin:32px 0 4px; scroll-margin-top:20px}
+h4{font:600 16px/1.4 Inter; color:var(--navy-300); margin:24px 0 4px}
+p{margin:12px 0}
+a{color:var(--teal-600)}
+a:hover{color:var(--gold-700)}
+hr{border:0; border-top:1px solid var(--border); margin:40px 0}
+ul,ol{margin:12px 0; padding-left:22px}
+li{margin:4px 0}
+code{font:400 .875em/1.5 "JetBrains Mono",ui-monospace,Consolas,monospace;
+  background:var(--teal-50); color:var(--teal-600); padding:2px 5px; border-radius:4px;
+  word-break:break-word}
+blockquote{margin:20px 0; padding:14px 18px; background:var(--gold-50);
+  border-left:4px solid var(--gold); border-radius:0 6px 6px 0}
+blockquote code{background:rgba(240,165,0,.16); color:var(--gold-700)}
+/* code blocks */
+.code{margin:16px 0; border-radius:8px; overflow:hidden; border:1px solid var(--border)}
+.code-head{display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy-300); padding:6px 12px}
+.lang{font:600 11px/1 "JetBrains Mono",monospace; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--teal-100)}
+.copy{font:600 12px Inter; background:transparent; color:var(--teal-100);
+  border:1px solid rgba(184,236,233,.4); border-radius:6px; padding:3px 10px; cursor:pointer;
+  min-height:28px}
+.copy:hover{background:var(--gold); color:var(--navy); border-color:var(--gold)}
+.copy:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+.code pre{margin:0; padding:14px 16px; background:var(--code-bg); overflow-x:auto}
+.code code{font:400 13.5px/1.7 "JetBrains Mono",ui-monospace,Consolas,monospace;
+  background:none; color:var(--code-text); padding:0}
+/* tables */
+.table-wrap{overflow-x:auto; margin:16px 0; border:1px solid var(--border); border-radius:8px}
+table{border-collapse:collapse; width:100%; background:var(--surface)}
+th{background:var(--navy); color:#fff; font:600 14px Inter; text-align:left;
+  padding:10px 14px; white-space:nowrap}
+td{padding:10px 14px; border-top:1px solid var(--border); font-size:14.5px; vertical-align:top}
+tbody tr:nth-child(even){background:var(--page)}
+/* theme toggle */
+.toggle{position:fixed; right:20px; bottom:20px; z-index:10; width:44px; height:44px;
+  border-radius:9999px; border:1px solid var(--border); background:var(--surface);
+  color:var(--navy); font-size:18px; cursor:pointer; box-shadow:0 2px 8px rgba(13,18,24,.12)}
+.toggle:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+.meta{color:var(--muted); font-size:14px; margin:0 0 4px}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr; gap:0}
+  aside{position:static; height:auto; border-right:0; border-bottom:1px solid var(--border);
+    padding-bottom:16px}
+  nav{max-height:240px; overflow-y:auto; padding-right:0}
+  h1{font-size:30px} h2{font-size:23px} main{padding-top:20px}
+}
+@media print{
+  aside,.toggle,.copy{display:none}
+  .shell{display:block; max-width:none; padding:0}
+  .code pre{background:#f4f6f8} .code code{color:#0D1218}
+  th{background:#17283C !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside>
+    <h2>On this page</h2>
+    <input id="filter" type="search" placeholder="Filter sections…" aria-label="Filter sections">
+    <nav id="toc"><a class="lvl2" href="#1-the-repositories">1. The repositories</a><a class="lvl3" href="#what-is-tracked-and-what-never-is">What is tracked, and what never is</a><a class="lvl2" href="#2-git-and-github">2. Git and GitHub</a><a class="lvl3" href="#daily-loop">Daily loop</a><a class="lvl3" href="#pull-before-you-push">Pull before you push</a><a class="lvl3" href="#first-time-setup-for-a-new-clone">First-time setup for a new clone</a><a class="lvl3" href="#24-check-what-you-are-about-to-publish">2.4 Check what you are about to publish</a><a class="lvl3" href="#adding-a-remote-to-a-suite-that-has-none">Adding a remote to a suite that has none</a><a class="lvl3" href="#26-situations-you-will-actually-hit">2.6 Situations you will actually hit</a><a class="lvl2" href="#3-spherewebautomation">3. SphereWebAutomation</a><a class="lvl3" href="#interactive-runner-the-usual-way-in">Interactive runner — the usual way in</a><a class="lvl3" href="#feature-specs">Feature specs</a><a class="lvl3" href="#course-and-competency-completion">Course and competency completion</a><a class="lvl3" href="#suites-and-reports">Suites and reports</a><a class="lvl3" href="#environment-comparison">Environment comparison</a><a class="lvl2" href="#4-ekshamatawebautomation">4. EkshamataWebAutomation</a><a class="lvl3" href="#competency-climb">Competency climb</a><a class="lvl3" href="#courses-and-certificates">Courses and certificates</a><a class="lvl3" href="#provisioning-users">Provisioning users</a><a class="lvl3" href="#comparison-and-reports">Comparison and reports</a><a class="lvl3" href="#other-specs">Other specs</a><a class="lvl2" href="#5-cbpautomation">5. CBPAutomation</a><a class="lvl2" href="#6-environment-variables">6. Environment variables</a><a class="lvl3" href="#baseurl-the-one-to-be-careful-with">BASE_URL — the one to be careful with</a><a class="lvl3" href="#the-rest">The rest</a><a class="lvl3" href="#urls">URLs</a><a class="lvl2" href="#7-raw-playwright">7. Raw Playwright</a><a class="lvl2" href="#8-troubleshooting">8. Troubleshooting</a></nav>
+  </aside>
+  <main>
+<h1 id="aastrika-automation-command-reference">Aastrika Automation — Command Reference</h1>
+<p>Everything needed to run the three Playwright suites and to keep them in Git.</p>
+<p>Shell examples are <strong>PowerShell</strong> (the default on these machines). Where a command needs an environment variable, the bash equivalent is given alongside, because the syntax differs and getting it wrong silently runs the wrong environment.</p>
+<div class="table-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Suites</strong></td><td><code>SphereWebAutomation</code>, <code>EkshamataWebAutomation</code>, <code>CBPAutomation</code></td></tr><tr><td><strong>Root</strong></td><td><code>D:\Automation</code></td></tr><tr><td><strong>Node</strong></td><td>run every command from <strong>inside a suite folder</strong>, never from <code>D:\Automation</code></td></tr></tbody></table></div>
+<blockquote><strong>Run commands from the suite folder.</strong> <code>npx playwright test</code> executed at <code>D:\Automation</code> finds no config and every spec fails. <code>cd</code> into <code>SphereWebAutomation</code>, <code>EkshamataWebAutomation</code> or <code>CBPAutomation</code> first.</blockquote>
+<hr>
+<h2 id="1-the-repositories">1. The repositories</h2>
+<p>Three separate private repos, one per suite.</p>
+<div class="table-wrap"><table><thead><tr><th>Suite</th><th>Repository</th></tr></thead><tbody><tr><td>SphereWebAutomation</td><td>https://github.com/Santhoshshivaprakash/SphereWebAutomation</td></tr><tr><td>EkshamataWebAutomation</td><td>https://github.com/Santhoshshivaprakash/E-Kshamata-Web-Automation</td></tr><tr><td>CBPAutomation</td><td>https://github.com/Santhoshshivaprakash/CBP-Automation</td></tr></tbody></table></div>
+<p>Each has <code>main</code> as its only branch and its own <code>.gitignore</code>.</p>
+<h3 id="what-is-tracked-and-what-never-is">What is tracked, and what never is</h3>
+<p>Tracked on purpose — the throwaway <code>@yopmail.com</code> account ledgers, so the team shares one history of which accounts exist where:</p>
+<div class="code"><div class="code-head"><span class="lang">text</span><button class="copy" type="button">Copy</button></div><pre><code>EkshamataWebAutomation/  created-users.txt, last-created-user.json,
+                         email-counters.json, test-reports/credentials_*.csv
+SphereWebAutomation/     config/accounts.json, registered-accounts.xlsx,
+                         generated-emails.txt, .last-registered-email.json</code></pre></div>
+<p>Never tracked:</p>
+<div class="table-wrap"><table><thead><tr><th>Excluded</th><th>Why</th></tr></thead><tbody><tr><td><code>.env</code> (all three)</td><td>API tokens, SMTP password, Gemini key, portal credentials</td></tr><tr><td><code>.auth-state*.json</code>, <code>.auth/</code></td><td>live session cookies</td></tr><tr><td><code>test-reports/</code>, <code>compare-reports/</code>, <code>regression-results/</code>, <code>reports/</code>, <code>playwright-report/</code>, <code>test-results/</code></td><td>regenerated every run, thousands of files</td></tr><tr><td><code>node_modules/</code></td><td>reinstallable</td></tr><tr><td><code>*copy*.json</code>, <code>nul</code></td><td>stray duplicates from a file copy or a shell redirect</td></tr></tbody></table></div>
+<p>The <code>credentials_*.csv</code> files are an exception carved out of an ignored directory. That needs <code>test-reports/*</code> rather than <code>test-reports/</code>, because <strong>Git cannot re-include a file whose parent directory is excluded.</strong></p>
+<hr>
+<h2 id="2-git-and-github">2. Git and GitHub</h2>
+<h3 id="daily-loop">Daily loop</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>cd D:\Automation\SphereWebAutomation
+
+git status                      # what changed
+git status --short               # the same, compact
+git diff                         # unstaged changes
+git diff --cached                # what is staged
+
+git add -A                       # stage everything not ignored
+git commit -m "Fix the T&amp;C gate detection"
+git push</code></pre></div>
+<p><code>git add -A</code> is safe here: the <code>.gitignore</code> files keep credentials and run output out. Verify with section 2.4 before any commit that touches new files.</p>
+<h3 id="pull-before-you-push">Pull before you push</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git pull --rebase                # replay your commits on top of the remote
+git log --oneline --graph -10     # see the shape of the history</code></pre></div>
+<h3 id="first-time-setup-for-a-new-clone">First-time setup for a new clone</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git clone https://github.com/Santhoshshivaprakash/SphereWebAutomation.git
+cd SphereWebAutomation
+npm install
+npx playwright install chromium
+Copy-Item config\accounts.example.json config\accounts.json   # then fill it in</code></pre></div>
+<p><code>.env</code> is <strong>not</strong> in the repo. Copy <code>.env.example</code> where one exists (e-kshamata, CBP) and fill in the tokens, or ask for the values.</p>
+<h3 id="24-check-what-you-are-about-to-publish">2.4 Check what you are about to publish</h3>
+<p>Run this <strong>before</strong> committing new files. It catches a credential file that no <code>.gitignore</code> rule covers yet.</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code># filenames that look sensitive
+git diff --cached --name-only | Select-String -Pattern "\.env|auth-state|secret|token|cookie"
+
+# actual secret VALUES in staged content
+git diff --cached --name-only | ForEach-Object { Select-String -Path $_ -Pattern "eyJ[A-Za-z0-9._-]{30,}|AIza[0-9A-Za-z_-]{30,}|bearer [A-Za-z0-9._-]{20,}" }</code></pre></div>
+<p>bash equivalent:</p>
+<div class="code"><div class="code-head"><span class="lang">bash</span><button class="copy" type="button">Copy</button></div><pre><code>git diff --cached --name-only | grep -iE "\.env|auth-state|secret|token|cookie"
+git diff --cached --name-only -z | xargs -0 grep -ohE "eyJ[A-Za-z0-9._-]{30,}|AIza[0-9A-Za-z_-]{30,}"</code></pre></div>
+<h3 id="adding-a-remote-to-a-suite-that-has-none">Adding a remote to a suite that has none</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git init
+git symbolic-ref HEAD refs/heads/main      # name the branch main
+git add -A
+git commit -m "Initial commit"
+git remote add origin https://github.com/Santhoshshivaprakash/&lt;REPO&gt;.git
+git push -u origin main</code></pre></div>
+<h3 id="26-situations-you-will-actually-hit">2.6 Situations you will actually hit</h3>
+<p><strong>The GitHub repo was created with a README, so the push is rejected.</strong> The histories are unrelated. Merge the stub in rather than force-pushing over it:</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git fetch origin main
+git merge origin/main --allow-unrelated-histories
+# conflict on README.md — keep the project one:
+git checkout --ours README.md
+git add README.md
+git commit --no-edit
+git push -u origin main</code></pre></div>
+<p><strong>A file is ignored but you want it tracked from now on.</strong> Delete the rule from <code>.gitignore</code> — do *not* use <code>git add -f</code>. A force-add stages the file once and then goes quiet as the suite appends to it.</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code># remove the line from .gitignore, then
+git add -A
+git commit -m "Track the account ledger"</code></pre></div>
+<p><strong><code>git check-ignore</code> says a file is not ignored, but the rule is clearly there.</strong> A file already in the index is never reported as ignored. Take it out first:</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git rm --cached "path\to\file"
+git check-ignore -v "path\to\file"        # now it reports the matching rule</code></pre></div>
+<p>**A negation like <code>!test-reports/credentials_*.csv</code> does nothing.** Two possible causes, both real:</p>
+<p>   <code>credentials_*.csv</code> further down overrides the negation above it.</p>
+<ol><li>the parent directory is excluded — change <code>test-reports/</code> to <code>test-reports/*</code>;</li><li>a broader rule appears <strong>later</strong> in the file and wins — a bare</li></ol>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git check-ignore -v test-reports\credentials_x.csv    # prints the rule and line number</code></pre></div>
+<p><strong>Something sensitive was committed.</strong> It is in history even after deleting the file. Remove it from tracking, then treat the credential as exposed and rotate it:</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git rm --cached path\to\secret
+# add it to .gitignore, then
+git commit -m "Stop tracking &lt;file&gt;"</code></pre></div>
+<p><strong>Undo, safely.</strong></p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>git restore path\to\file          # discard unstaged changes to one file
+git restore --staged path\to\file  # unstage, keep the edit
+git reset --soft HEAD~1            # undo the last commit, keep the changes staged</code></pre></div>
+<p><code>git reset --hard</code> and <code>git push --force</code> discard work. Prefer the above.</p>
+<hr>
+<h2 id="3-spherewebautomation">3. SphereWebAutomation</h2>
+<p>Portal: <code>https://sphere.aastrika.org</code> (production) · <code>https://portal-staging.aastrika.org</code> (staging)</p>
+<h3 id="interactive-runner-the-usual-way-in">Interactive runner — the usual way in</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>cd D:\Automation\SphereWebAutomation
+npm run go            # asks for environment, then which spec
+npm run go:both       # the same spec on production then staging, one report</code></pre></div>
+<p><code>npm run go</code> refuses a <code>BASE_URL</code> that is not a Sphere host and asks instead — see section 6.</p>
+<h3 id="feature-specs">Feature specs</h3>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Spec</th></tr></thead><tbody><tr><td><code>npm run run:create-account</code></td><td>signup end to end (OTP from yopmail)</td></tr><tr><td><code>npm run run:login</code></td><td>public login</td></tr><tr><td><code>npm run run:otp</code></td><td>OTP flow</td></tr><tr><td><code>npm run run:account</code></td><td>Account settings</td></tr><tr><td><code>npm run run:mycourse</code></td><td>My Courses</td></tr><tr><td><code>npm run run:course-toc</code></td><td>course table of contents</td></tr><tr><td><code>npm run run:competency</code></td><td>competency dashboard</td></tr><tr><td><code>npm run run:private</code></td><td>private learner page</td></tr><tr><td><code>npm run run:public</code></td><td>public site</td></tr><tr><td><code>npm run run:scorm</code></td><td>SCORM module</td></tr><tr><td><code>npm run run:fastlogin</code></td><td>API fast login</td></tr><tr><td><code>npm run login:check</code></td><td>verify a set of credentials can sign in</td></tr></tbody></table></div>
+<h3 id="course-and-competency-completion">Course and competency completion</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm run run:course                 # interactive: pick the course
+npm run courses:list               # list available courses
+npm run run:course-fresh           # mint a brand-new user, then complete a course
+npm run run:complete-competency    # all 5 levels of a competency
+npm run mint:fresh-user            # create one brand-new account, nothing else</code></pre></div>
+<h3 id="suites-and-reports">Suites and reports</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm test                  # every spec, default project
+npm run test:ui           # Chrome project only
+npm run test:api          # API specs
+npm run test:monitor      # monitor project
+npm run test:all          # scripted full run
+npm run test:list         # inventory of specs
+
+npm run report            # open the last Playwright HTML report
+npm run test:regression   # full regression, branded merged report
+npm run report:merge      # merge blob reports into the branded report
+npm run report:full       # every Chrome spec, headless, against production
+npm run report:sanity     # auth + app + course blobs, then merge</code></pre></div>
+<h3 id="environment-comparison">Environment comparison</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm run compare           # interactive picker
+npm run compare:auth      # signed-in comparison
+npm run compare:all       # everything, opens the report
+npm run compare:journeys  # journeys only
+npm run compare:signup    # the signup journey only
+npm run compare:local     # production vs localhost:3000</code></pre></div>
+<hr>
+<h2 id="4-ekshamatawebautomation">4. EkshamataWebAutomation</h2>
+<p>Portal: <code>https://ekshamata.aastrika.org</code> (production) · <code>https://ekshamata-staging.aastrika.org</code> (staging)</p>
+<blockquote>e-kshamata and Sphere are <strong>different portals</strong> with different accounts. An account created on one does not work on the other, and the two backends are separate — which is why users are provisioned per environment.</blockquote>
+<h3 id="competency-climb">Competency climb</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>cd D:\Automation\EkshamataWebAutomation
+npm run run:competency        # interactive: org, competency, levels
+npm run climb:bnrc            # BNRC preselected
+npm run climb:shsb            # SHSB
+npm run climb:dmhup           # DMHUP
+npm run climb:pvtbihar        # PVTBIHAR
+npm run climb:pvtup           # PVTUP
+npm run run:stepper           # the stepper spec, interactive</code></pre></div>
+<p>Fail a chosen level on purpose and clear it through that level's course:</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>$env:ORG="BNRC"
+$env:COMPETENCY="Vaginal examination and plotting on partograph"
+$env:LEVELS="5"; $env:FAIL_LEVELS="5"
+$env:BASE_URL="https://ekshamata-staging.aastrika.org"
+npx playwright test tests/competency-course.spec.ts --project=Chrome</code></pre></div>
+<p><code>FAIL_LEVELS</code> counts <strong>loop iterations, not portal levels</strong>. On an account that has already cleared level 1, iteration 1 is the portal's level 2. Use a fresh account whenever it matters which level fails — leave <code>REUSE_USERS</code> unset.</p>
+<h3 id="courses-and-certificates">Courses and certificates</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm run run:course                  # interactive
+npm run courses:list                # list courses on production
+npm run courses:list:stage          # list courses on staging
+npm run run:course:prod             # production
+npm run run:course:stage            # staging
+npm run run:certificate             # complete a course, collect the certificate
+npm run run:certificate:only        # certificate step alone
+npm run run:certificate:only:prod   # production
+npm run run:certificate:only:stage  # staging</code></pre></div>
+<h3 id="provisioning-users">Provisioning users</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm run create:creds -- --org BNRC          # every BNRC role, credentials only
+npm run create:creds -- --org BNRC,SHSB     # several orgs
+npm run create:creds -- --all                # every org, every role
+npm run create:creds -- --all --stage        # on staging
+npm run create:creds -- --org BNRC --count 3 # three per role
+
+npm run create:pair -- BNRC       # create AND verify a login
+npm run create:user               # interactive
+npm run verify:account            # check an account can sign in
+npm run roles                     # role sweep, pick the org
+npm run roles:all                 # every org</code></pre></div>
+<p><code>create:creds</code> opens no browser — it is the three provisioning API calls only, so a batch takes seconds. It proves nothing about logging in; use <code>create:pair</code> for that. Every account is appended to <code>created-users.txt</code> with its <code>env=</code> host.</p>
+<blockquote>A <strong>freshly provisioned account has no learning plan for a few minutes</strong>. The competency home comes up with no cards until the backend fills it, and new accounts must accept the Terms of use gate on first login (the suites do this automatically).</blockquote>
+<h3 id="comparison-and-reports">Comparison and reports</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm run compare           # interactive
+npm run compare:bnrc      # BNRC, prod vs stage
+npm run compare:orgs      # every role, homepage layout, one consolidated sheet
+npm run compare:all
+npm run compare:users
+npm run test:regression
+npm run report
+npm run report:brand      # path to the branded report</code></pre></div>
+<h3 id="other-specs">Other specs</h3>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npm run smoke                 # smoke spec, headed
+npm run login                 # login spec
+npm run test:bnrc             # the BNRC org spec, existing user
+npm run test:orgs             # the orgs project
+npm run test:org-content      # org content checks
+npm run test:badge            # Account-page badge
+npm run test:badge:mp         # the same, ORG=MP
+npm run run:clicks            # click-through spec
+npm run run:create-user-test  # user-creation spec</code></pre></div>
+<hr>
+<h2 id="5-cbpautomation">5. CBPAutomation</h2>
+<p>Portal: <code>https://cbp-staging.aastrika.org</code>, SSO via <code>portal-staging.aastrika.org</code></p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>cd D:\Automation\CBPAutomation
+npm run go                    # interactive runner
+npm run login
+
+npm run create                # authoring flow
+npm run send-for-review
+npm run review
+npm run accept-to-publisher
+npm run publish-course
+
+npm run lifecycle             # full create → review → publish, headed
+npm run lifecycle:report      # the same, headless, builds the report
+npm run lifecycle:fast        # fast path against staging
+npm run report:build          # rebuild the report from reports/results.json
+
+npm test                      # Chrome project
+npm run test:headless
+npm run test:all</code></pre></div>
+<hr>
+<h2 id="6-environment-variables">6. Environment variables</h2>
+<h3 id="baseurl-the-one-to-be-careful-with">BASE_URL — the one to be careful with</h3>
+<p>All three suites read <code>BASE_URL</code>, and in PowerShell <code>$env:BASE_URL</code> <strong>outlives the command that set it</strong>. A value left over from an e-kshamata run captures the next Sphere run silently.</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>$env:BASE_URL="https://portal-staging.aastrika.org"   # set
+Remove-Item Env:BASE_URL                               # clear
+Get-ChildItem Env:BASE_URL                             # check</code></pre></div>
+<div class="code"><div class="code-head"><span class="lang">bash</span><button class="copy" type="button">Copy</button></div><pre><code>export BASE_URL=https://portal-staging.aastrika.org
+unset BASE_URL</code></pre></div>
+<p>The Sphere runner now rejects a non-Sphere <code>BASE_URL</code> and prompts instead, rather than running Sphere specs against another portal. Clear it anyway — other entry points read it directly.</p>
+<h3 id="the-rest">The rest</h3>
+<div class="table-wrap"><table><thead><tr><th>Variable</th><th>Effect</th></tr></thead><tbody><tr><td><code>HEADLESS=true</code></td><td>no visible browser</td></tr><tr><td><code>REUSE_USERS=1</code></td><td>reuse the newest matching account instead of provisioning</td></tr><tr><td><code>ORG</code></td><td>org key (<code>BNRC</code>, <code>SHSB</code>, <code>MP</code>, <code>DMHUP</code>, <code>PVTBIHAR</code>, …)</td></tr><tr><td><code>CREATE_DESIGNATION</code></td><td>a specific role within a multi-role org</td></tr><tr><td><code>COMPETENCY</code></td><td>competency name, exactly as the card shows it</td></tr><tr><td><code>LEVELS</code> / <code>FAIL_LEVELS</code></td><td>how many levels; which to fail on purpose (<code>all</code> accepted)</td></tr><tr><td><code>MAX_MODULES</code></td><td>cap on modules per course</td></tr><tr><td><code>QUIZ_DEBUG=1</code></td><td>per-step quiz diagnostics (<code>visibleRadios=… answered=…</code>)</td></tr><tr><td>`ENSURE_LANG=hi\</td><td>en`</td><td>pin the portal language (a persisted account setting)</td></tr><tr><td><code>COURSE_NAME</code></td><td>course to complete, skipping the prompt</td></tr><tr><td><code>SPHERE_USER_PREFIX</code></td><td>override the staging email tag; <code>none</code> switches it off</td></tr><tr><td><code>USER_ENV_TAG</code></td><td>e-kshamata equivalent</td></tr><tr><td><code>COMPETENCY_USER_EMAIL</code></td><td>wins over <code>TEST_USER_EMAIL</code> for competency runs</td></tr><tr><td><code>PROD_EMAIL</code> / <code>PROD_PASSWORD</code></td><td>credentials for production runs</td></tr><tr><td><code>STAGING_EMAIL</code> / <code>STAGING_PASSWORD</code></td><td>credentials for staging runs</td></tr><tr><td><code>JSON_OUT</code></td><td>also write a JSON report to that path</td></tr></tbody></table></div>
+<p>Account precedence, highest first: <code>PROD_EMAIL</code> / <code>STAGING_EMAIL</code> (whichever matches the environment) → <code>TEST_USER_EMAIL</code> → <code>MONITOR_EMAIL</code>. So a <code>PROD_EMAIL</code> sitting in <code>.env</code> wins over <code>TEST_USER_EMAIL</code> and the runner will say so as it starts — worth reading that line, because it explains a run that signs in as an account you did not expect.</p>
+<h3 id="urls">URLs</h3>
+<div class="table-wrap"><table><thead><tr><th>Environment</th><th>URL</th></tr></thead><tbody><tr><td>Sphere production</td><td><code>https://sphere.aastrika.org</code></td></tr><tr><td>Sphere staging</td><td><code>https://portal-staging.aastrika.org</code></td></tr><tr><td>e-kshamata production</td><td><code>https://ekshamata.aastrika.org</code></td></tr><tr><td>e-kshamata staging</td><td><code>https://ekshamata-staging.aastrika.org</code></td></tr><tr><td>CBP staging</td><td><code>https://cbp-staging.aastrika.org</code></td></tr><tr><td>Local mirror</td><td><code>http://localhost:3000</code></td></tr></tbody></table></div>
+<hr>
+<h2 id="7-raw-playwright">7. Raw Playwright</h2>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>npx playwright test                              # everything
+npx playwright test tests/Account.spec.ts        # one spec
+npx playwright test --project=Chrome             # one project
+npx playwright test -g "partial test name"       # one test
+npx playwright test --headed                     # watch it
+npx playwright test --debug                      # step through
+npx playwright test --reporter=line              # compact output
+npx playwright show-report                       # last HTML report
+npx playwright install chromium                  # install the browser</code></pre></div>
+<hr>
+<h2 id="8-troubleshooting">8. Troubleshooting</h2>
+<p><strong>A run prints the dotenv line and then nothing.</strong> Orphaned Playwright processes from a killed run are holding things up. Clear them:</p>
+<div class="code"><div class="code-head"><span class="lang">powershell</span><button class="copy" type="button">Copy</button></div><pre><code>Get-CimInstance Win32_Process |
+  Where-Object { $_.CommandLine -like '*EkshamataWebAutomation*' } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force }</code></pre></div>
+<p><strong>Run one browser workload at a time.</strong> Two headed runs on one machine make the slower one time out and report a failure that is not real.</p>
+<p><strong>Signup fails with "Sorry ! User not created. Please try again in sometime."</strong> The portal rejects an email whose local part (before the <code>@</code>) is <strong>20 characters or longer</strong>; 19 works. <code>testautomation</code> + 5 digits is exactly 19, so any prefix pushes it over. The UI gives no error — the wizard just resets to a blank form, which looks like a button that never fired. The suite now shortens the base name to make room for the <code>stage-</code> tag, so staging produces <code>stage-testauto12345@yopmail.com</code>.</p>
+<p><strong>No OTP arrives.</strong> First check whether the account was created at all: watch <code>POST /apis/public/v8/signupWithAutoLoginV2/register</code> in the network panel. A 500 there means no user, and therefore no mail — the inbox being empty is a symptom, not the cause.</p>
+<p><strong>The competency home shows no cards.</strong> Either the account is brand new and its learning plan has not been built yet, or it is sitting on the Terms of use gate at <code>/app/new-tnc</code>, which blocks every route.</p>
+<p><strong>Playwright note:</strong> <code>isVisible({ timeout })</code> does <strong>not</strong> wait — it is an instant check and the <code>timeout</code> option is ignored. Use <code>waitFor({ state: 'visible', timeout })</code> when something needs waiting for. This caused two real bugs: a Terms gate that was never accepted, and a retry loop that reloaded 58 times in the time it should have spent watching for one element.</p>
+  </main>
+</div>
+<button class="toggle" type="button" id="theme" title="Toggle light / dark" aria-label="Toggle light or dark theme">◐</button>
+<script>
+// Copy buttons.
+for (const btn of document.querySelectorAll('.copy')) {
+  btn.addEventListener('click', async () => {
+    const code = btn.closest('.code').querySelector('code').innerText;
+    try {
+      await navigator.clipboard.writeText(code);
+      btn.textContent = 'Copied';
+    } catch {
+      btn.textContent = 'Press Ctrl+C';
+      const r = document.createRange();
+      r.selectNodeContents(btn.closest('.code').querySelector('code'));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    }
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1400);
+  });
+}
+
+// Sidebar filter.
+const filter = document.getElementById('filter');
+filter.addEventListener('input', () => {
+  const q = filter.value.trim().toLowerCase();
+  for (const a of document.querySelectorAll('#toc a')) {
+    a.hidden = Boolean(q) && !a.textContent.toLowerCase().includes(q);
+  }
+});
+
+// Highlight the section in view.
+const links = new Map([...document.querySelectorAll('#toc a')].map((a) => [a.hash.slice(1), a]));
+const seen = new Set();
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting) seen.add(e.target.id); else seen.delete(e.target.id);
+  }
+  let first = null;
+  for (const id of links.keys()) if (seen.has(id)) { first = id; break; }
+  for (const [id, a] of links) a.classList.toggle('active', id === first);
+}, { rootMargin: '-10% 0px -80% 0px' });
+for (const id of links.keys()) { const el = document.getElementById(id); if (el) io.observe(el); }
+
+// Theme, remembered per viewer where storage allows.
+const themeBtn = document.getElementById('theme');
+try {
+  const saved = localStorage.getItem('commands-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+} catch {}
+themeBtn.addEventListener('click', () => {
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const now = document.documentElement.dataset.theme || (dark ? 'dark' : 'light');
+  const next = now === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('commands-theme', next); } catch {}
+});
+</script>
+</body>
+</html>

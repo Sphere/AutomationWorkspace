@@ -1,0 +1,29 @@
+# This repo holds ONLY the shared, cross-project files that live at D:\Automation:
+# the command cheat sheet, the write-ups, and the runner that starts both suites.
+#
+# The three automation projects are their OWN Git repositories and are ignored
+# here on purpose. Without these lines Git records each of them as an empty
+# "gitlink" — a pointer to a commit, with none of the files — which looks like
+# the work was pushed when nothing was.
+/SphereWebAutomation/
+/EkshamataWebAutomation/
+/CBPAutomation/
+
+# Dependencies
+node_modules/
+
+# Generated output — rebuilt by every run, never worth committing
+/brand-reports/
+/test-reports/
+/compare-reports/
+/test-results/
+/playwright-report/
+
+# Editor / tooling
+.idea/
+.vscode/
+.claude/
+
+# Secrets — never commit
+.env
+.env.*

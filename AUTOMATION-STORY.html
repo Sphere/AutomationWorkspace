@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>How the portal automation was built</title>
+<style>
+  :root{
+    --navy:#0B2545; --teal:#1B9AAA; --gold:#E8B02B;
+    --ink:#1F2933; --muted:#6B7684; --line:#E3E8EF; --bg:#F7F9FB; --ok:#1E8E5A;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:'Open Sans',Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.65}
+  .wrap{max-width:940px;margin:0 auto;padding:24px 20px 72px}
+  header{background:var(--navy);color:#fff;border-radius:8px;padding:28px 30px}
+  header h1{margin:0 0 8px;font-size:26px;font-weight:600}
+  header p{margin:0;color:#C7D2E0;font-size:13.5px}
+  h2{color:var(--navy);font-size:20px;margin:36px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+  h3{color:var(--navy);font-size:16px;margin:20px 0 6px}
+
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+  .num{background:#fff;border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:7px;padding:14px 16px}
+  .num b{display:block;font-size:26px;color:var(--navy);line-height:1.2}
+  .num span{font-size:12px;color:var(--muted)}
+
+  .card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--teal);
+        border-radius:7px;padding:14px 18px;margin:12px 0}
+  .card.gold{border-left-color:var(--gold);background:#FFFCF4}
+  .card h4{margin:0 0 6px;font-size:14.5px;color:var(--navy)}
+  .card p{margin:6px 0}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+        border-radius:8px;padding:16px;margin:14px 0}
+  .chip{background:var(--navy);color:#fff;border-radius:6px;padding:8px 12px;font-size:12.5px;font-weight:600;white-space:nowrap}
+  .chip.t{background:var(--teal)} .chip.g{background:var(--ok)}
+  .ar{color:var(--muted);font-weight:700}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;display:block;overflow-x:auto}
+  th{background:var(--navy);color:#fff;text-align:left;padding:9px 12px;white-space:nowrap}
+  td{border-bottom:1px solid var(--line);padding:9px 12px;background:#fff;vertical-align:top}
+  td:first-child{white-space:nowrap;font-weight:600;color:var(--navy)}
+  ul{margin:8px 0;padding-left:20px} li{margin:4px 0}
+  .k{font-family:Consolas,Monaco,monospace;font-size:12.5px;background:#EEF2F6;padding:1px 6px;border-radius:4px;color:var(--navy)}
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+  @media print{body{background:#fff}.wrap{max-width:none;padding:0}header{border-radius:0}
+               h2{page-break-after:avoid}.card,.num,table{page-break-inside:avoid}}
+  @media(max-width:600px){.wrap{padding:16px 14px 48px}header{padding:20px}}
+</style></head>
+<body><div class="wrap">
+
+<header>
+  <h1>How the portal automation was built</h1>
+  <p>Aastrika Sphere · e-Kshamata · CBP — from manual clicking to a suite that runs itself on every deployment</p>
+</header>
+
+<h2>Where it stands today</h2>
+<div class="nums">
+  <div class="num"><b>75</b><span>automated spec files across three portals</span></div>
+  <div class="num"><b>520+</b><span>individual checks</span></div>
+  <div class="num"><b>3</b><span>environments covered — production, staging, UAT</span></div>
+  <div class="num"><b>7</b><span>pipelines that run without anyone starting them</span></div>
+  <div class="num"><b>26</b><span>org × role combinations verified on e-Kshamata</span></div>
+  <div class="num"><b>278</b><span>test learners created and tracked automatically</span></div>
+</div>
+
+<h2>The problem it solves</h2>
+<div class="card">
+  <p>Every release meant a person opening the portal and clicking through the same journeys: sign up, log in,
+  find a course, finish it, take the quiz, collect the certificate — then repeating that for each role, in two
+  languages, on three environments. It took hours, it was tested the same way twice only by luck, and anything
+  slow or subtly broken slipped through simply because nobody had time to check it again.</p>
+</div>
+
+<h2>What a learner does, the automation now does</h2>
+<p class="sub">The suite drives a real browser through the real portal — no mocks, no shortcuts.</p>
+<div class="flow">
+  <span class="chip">Sign up</span><span class="ar">→</span>
+  <span class="chip">Read the OTP from the inbox</span><span class="ar">→</span>
+  <span class="chip">Accept T&amp;C</span><span class="ar">→</span>
+  <span class="chip t">Browse courses</span><span class="ar">→</span>
+  <span class="chip t">Watch videos &amp; read PDFs</span><span class="ar">→</span>
+  <span class="chip t">Answer the quiz</span><span class="ar">→</span>
+  <span class="chip t">Climb competency levels</span><span class="ar">→</span>
+  <span class="chip g">Download the certificate ✓</span>
+</div>
+<p>It signs up a brand-new learner each run, because a fixed account has already finished the course after the
+first run and would prove nothing. The OTP is read from the real inbox, and the quiz is answered from the
+portal's own answer key — so a pass means the journey genuinely worked, not that a check was skipped.</p>
+
+<h2>How it was built, in four stages</h2>
+
+<div class="card">
+  <h4>1 · Make one journey work by hand</h4>
+  <p>Start with the single most valuable path — sign up and finish a course — and get it passing reliably once.
+  Everything else is a variation of that.</p>
+</div>
+<div class="card">
+  <h4>2 · Make it survive the real portal</h4>
+  <p>The hard part was never writing clicks; it was the portal's own behaviour. The suite had to learn that pages
+  render in Hindi as readily as English, that a quiz submits one question at a time, that a signup address longer
+  than 19 characters is silently rejected, and that a logged-out session still looks logged in from the outside.
+  Each of those was a real failure, found once and then handled for good.</p>
+</div>
+<div class="card">
+  <h4>3 · Make the results readable</h4>
+  <p>A pass/fail list helps nobody outside the team. Every run now produces a branded HTML report with
+  screenshots, an Excel sheet, and a PDF to attach to an email — plus the downloaded certificates as evidence.</p>
+</div>
+<div class="card">
+  <h4>4 · Make it run without me</h4>
+  <p>The suites moved into GitHub, where they start themselves: on a schedule, on every release, and — once the
+  deploy pipeline sends one signal — within seconds of a new build reaching an environment.</p>
+</div>
+
+<h2>What runs on its own</h2>
+<table>
+  <thead><tr><th>When</th><th>What happens</th><th>Why it matters</th></tr></thead>
+  <tbody>
+    <tr><td>Every 15 minutes</td><td>Login smoke on production</td><td>Catches an outage before users report it</td></tr>
+    <tr><td>Every morning</td><td>Production vs staging comparison, plus a full journey on each environment</td><td>Shows overnight drift between environments</td></tr>
+    <tr><td>On every deployment</td><td>Public pages → credential check → signed-in suite → fresh signup</td><td>A broken build is known in minutes, not after release</td></tr>
+    <tr><td>On every release</td><td>The full regression suite</td><td>The release gate</td></tr>
+  </tbody>
+</table>
+
+<h2>Things it has actually caught</h2>
+<div class="card gold">
+  <ul>
+    <li><b>A course stuck at 86%</b> — every module consumed, yet the portal never recorded completion, because the
+      final assessment submitted after a single question.</li>
+    <li><b>A badge that appears on production and not on staging</b> for the same learner — invisible from the
+      course side, where everything looked finished.</li>
+    <li><b>Certificates listing 1 of N</b> when a learner had earned several.</li>
+    <li><b>Pages that render only in Hindi</b> on some orgs, where English-only checks quietly passed over them.</li>
+    <li><b>A login that failed without saying so</b> — the portal accepted bad credentials and returned an
+      anonymous session, which made tests fail twenty steps later for reasons that had nothing to do with login.</li>
+  </ul>
+</div>
+
+<h2>What it gives back</h2>
+<table>
+  <thead><tr><th>Before</th><th>Now</th></tr></thead>
+  <tbody>
+    <tr><td>Hours of manual clicking per release</td><td>Minutes, unattended — and it starts itself</td></tr>
+    <tr><td>One environment checked, the others hoped for</td><td>Production, staging and UAT, every day</td></tr>
+    <tr><td>"It looked fine when I checked"</td><td>A report with screenshots, timings and evidence</td></tr>
+    <tr><td>Role-specific bugs found by users</td><td>26 org × role combinations verified automatically</td></tr>
+    <tr><td>Slow pages noticed only when someone complained</td><td>Load time measured per page, flagged when one side is twice the other</td></tr>
+  </tbody>
+</table>
+
+<h2>The parts, in plain terms</h2>
+<table>
+  <thead><tr><th>Piece</th><th>What it is</th></tr></thead>
+  <tbody>
+    <tr><td>Playwright</td><td>Drives a real Chrome through the portal, exactly as a person would</td></tr>
+    <tr><td>Specs</td><td>One file per area — signup, courses, competency, account, certificates</td></tr>
+    <tr><td>Helpers</td><td>Shared know-how: logging in, reading an OTP, finding a button in either language</td></tr>
+    <tr><td>Reporters</td><td>Turn a run into the HTML, Excel and PDF people actually read</td></tr>
+    <tr><td>GitHub Actions</td><td>Runs all of it on a schedule, on release, and on deployment</td></tr>
+  </tbody>
+</table>
+
+<style>
+  pre{background:#0B2545;color:#E8EEF6;border-radius:6px;padding:13px 15px;overflow-x:auto;
+      font-family:Consolas,Monaco,monospace;font-size:12.5px;line-height:1.55;margin:8px 0}
+  pre .c{color:#8FA7C4}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+  .two h4{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+  .two .raw h4{color:#B9770E} .two .good h4{color:#1E8E5A}
+  .run{display:grid;grid-template-columns:70px 1fr;gap:14px;background:#fff;border:1px solid #E3E8EF;
+       border-left:3px solid #1B9AAA;border-radius:7px;padding:13px 16px;margin:10px 0}
+  .run .t{font-weight:700;color:#0B2545;font-size:12.5px}
+  .run p{margin:4px 0}
+  @media(max-width:700px){.two{grid-template-columns:1fr}.run{grid-template-columns:1fr}}
+</style>
+
+<h2>How the spec files were actually written</h2>
+<p class="sub">Record the journey first, then turn that recording into something that can run unattended a hundred times.</p>
+
+<div class="card">
+  <h4>Step 1 · Record the journey by doing it</h4>
+  <p>Playwright ships a recorder. You point it at the portal and click through as a learner would, and it writes
+  the code for every click and keystroke as you go.</p>
+<pre><span class="c"># opens the portal, plus a window that writes code as you click</span>
+npx playwright codegen https://portal-staging.aastrika.org</pre>
+  <p>Five minutes of clicking gives a working first draft — and, more valuable, it shows
+  <i>what the portal really does</i>, including steps nobody wrote down.</p>
+</div>
+
+<div class="card gold">
+  <h4>A real example of why recording first matters</h4>
+  <p>An in-course quiz kept failing: the run answered question one and stopped. A recording of a person taking
+  that quiz showed the actual rhythm — <b>pick an option → Submit → Next</b>, repeated for every question. That
+  "Submit" belonged to the question, not the quiz, and the automation had been reading the first one as
+  "finished". Nothing on screen says this; the recording showed it in seconds.</p>
+</div>
+
+<div class="card">
+  <h4>Step 2 · Turn the recording into a test</h4>
+  <p>A raw recording is a starting point, never the finished article. It captures <i>one</i> run: that day's data,
+  that session's ids, no checks, and no patience for a slow page. The clean-up is the real work.</p>
+  <div class="two">
+    <div class="raw">
+      <h4>What the recorder writes</h4>
+<pre>click('#mat-radio-94')
+goto('…/auth?tab_id=xY9')
+fill('#otp', '483921')
+click('text=Submit')</pre>
+    </div>
+    <div class="good">
+      <h4>What it has to become</h4>
+<pre>chooseOption(correctAnswer)    <span class="c">// from the key</span>
+followRedirect()               <span class="c">// ids expire</span>
+fill(await readOtpFromInbox()) <span class="c">// live</span>
+clickQuizSubmit()              <span class="c">// not the player's</span></pre>
+    </div>
+  </div>
+</div>
+
+<h3>What changes, and why</h3>
+<table>
+  <thead><tr><th>In the recording</th><th>Why it breaks on replay</th><th>What replaces it</th></tr></thead>
+  <tbody>
+    <tr><td>A one-time code typed in</td><td>The OTP is different every run</td><td>Read live from the inbox</td></tr>
+    <tr><td>A recorded URL with a session id</td><td>The id is stale the moment recording stops</td><td>Follow the portal's own redirect</td></tr>
+    <tr><td>Reaching the inbox via a search engine</td><td>Trips a CAPTCHA when replayed</td><td>Open the inbox directly</td></tr>
+    <tr><td>Ids like <span class="k">#mat-radio-94</span></td><td>Auto-generated; they change on the next build</td><td>Find the control by what it says on screen</td></tr>
+    <tr><td>English labels only</td><td>Most orgs render the portal in Hindi</td><td>Match either language</td></tr>
+    <tr><td>Clicks with no checks</td><td>A run can "pass" having achieved nothing</td><td>Assert that the thing actually happened</td></tr>
+    <tr><td>The same account every time</td><td>Its course is already finished after run one</td><td>Sign up a fresh learner per run</td></tr>
+  </tbody>
+</table>
+
+<div class="card">
+  <h4>Step 3 · Watch it, then stop watching it</h4>
+  <p>A new spec runs with the browser visible until it passes twice in a row, then runs hidden. Anything repeated
+  across specs — logging in, reading an OTP, finding a button in either language — moves into a shared helper, so
+  it is written once and fixed once.</p>
+<pre><span class="c"># watch it work</span>
+npx playwright test tests/create-account.spec.ts --project=Chrome --headed
+
+<span class="c"># slow it down enough to follow by eye</span>
+$env:SLOW_MO="250"</pre>
+</div>
+
+<h2>Giving the demo</h2>
+<p class="sub">Ten minutes, in this order. The live run does the convincing; everything else is commentary.</p>
+
+<div class="run"><div class="t">0–1 min<br/>Set up</div><div>
+  <p>Open the portal and say what one release used to cost: every journey, every role, two languages, three
+  environments — all by hand. That is the number everything else is measured against.</p>
+</div></div>
+
+<div class="run"><div class="t">1–4 min<br/>Run it live</div><div>
+  <p>Start a signup with the browser visible. Let people watch it fill the form, fetch the real OTP from the
+  inbox, and land on the signed-in home. This is the moment the room understands it.</p>
+<pre>cd D:\Automation\SphereWebAutomation
+$env:BASE_URL="https://portal-staging.aastrika.org"; $env:SLOW_MO="250"
+npx playwright test tests/create-account.spec.ts --project=Chrome --headed</pre>
+</div></div>
+
+<div class="run"><div class="t">4–6 min<br/>While it runs</div><div>
+  <p>Open a report from an earlier run — screenshots, timings, the downloaded certificate. Say that this is what
+  gets attached to the release email, and that nobody assembles it by hand.</p>
+</div></div>
+
+<div class="run"><div class="t">6–8 min<br/>It runs itself</div><div>
+  <p>Open GitHub → Actions. Show a run nobody started: one from the schedule, one triggered by a deployment.
+  Open its artifacts to show the same report produced in the cloud.</p>
+</div></div>
+
+<div class="run"><div class="t">8–10 min<br/>What it caught</div><div>
+  <p>Finish with one real defect — the course stuck at 86% with every module finished, or the badge that showed
+  on production and not on staging. A found bug persuades people more than any pass rate.</p>
+</div></div>
+
+<div class="card gold">
+  <h4>Before you present</h4>
+  <ul>
+    <li>Rehearse once on the same machine and network — signup depends on a live inbox.</li>
+    <li>Keep a finished report open in a tab, in case the portal is slow on the day.</li>
+    <li>Run <span class="k">npm run check:login</span> first: twenty seconds, and it tells you the demo will get in.</li>
+    <li>Have the account details to hand — a demo that stops to debug a password loses the room.</li>
+  </ul>
+</div>
+
+<footer>
+  Sphere · e-Kshamata · CBP web automation — 33 / 25 / 17 spec files, maintained in three Git repositories.<br/>
+  Figures counted from the repositories on 7 October 2026.
+</footer>
+
+</div></body></html>

@@ -1,0 +1,18 @@
+{
+  "name": "aastrika-sphere-automation",
+  "version": "1.0.0",
+  "description": "Shared dev tooling for the automation suites in this folder (SphereWebAutomation, EkshamataWebAutomation, CBPAutomation). It has no tests of its own — the devDependencies below are what those projects resolve typescript/ts-node from, so this package must stay installed.",
+  "scripts": {
+    "typecheck": "echo \"Run tsc inside a project folder, e.g. cd SphereWebAutomation && npx tsc --noEmit\"",
+    "both": "node scripts/run-both.mjs",
+    "both:staging": "node scripts/run-both.mjs --staging",
+    "both:uat": "node scripts/run-both.mjs --uat",
+    "both:regression": "node scripts/run-both.mjs --task regression",
+    "both:compare": "node scripts/run-both.mjs --task compare"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.0"
+  }
+}
