@@ -1,0 +1,352 @@
+<title>Aastrika Automation Toolkit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: one reading column; a project grid and tables carry the detail. Tarento 80/15/5 navy · teal · gold. */
+  :root {
+    --bg: #F6F7F9; --surface: #FFFFFF; --ink: #0D1218; --muted: #5E6878;
+    --navy: #17283C; --navy-soft: #2D3E54; --teal: #1E8F8E; --teal-bg: #E3F7F6;
+    --gold: #F0A500; --gold-bg: #FEF6E0; --line: #D8DEE5; --head-ink: #FFFFFF;
+    --font-body: 'Open Sans', 'Segoe UI', Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1823; --surface: #17283C; --ink: #E8EDF3; --muted: #A3AEBC;
+      --navy: #DCE4EE; --navy-soft: #2D3E54; --teal: #3FC1BF; --teal-bg: #133A3C;
+      --gold: #F5B92E; --gold-bg: #3A2E10; --line: #2D3E54; --head-ink: #0F1823;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F1823; --surface: #17283C; --ink: #E8EDF3; --muted: #A3AEBC;
+    --navy: #DCE4EE; --navy-soft: #2D3E54; --teal: #3FC1BF; --teal-bg: #133A3C;
+    --gold: #F5B92E; --gold-bg: #3A2E10; --line: #2D3E54; --head-ink: #0F1823;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15.5px; line-height: 1.6; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 72px; }
+
+  header.top { border-bottom: 3px solid var(--teal); padding-bottom: 22px; margin-bottom: 8px; }
+  .eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); font-weight: 700; margin: 0 0 6px; }
+  h1 { font-size: clamp(28px, 4.2vw, 40px); line-height: 1.15; color: var(--navy); margin: 0 0 10px; text-wrap: balance; font-weight: 700; }
+  .lede { max-width: 68ch; color: var(--muted); margin: 0; font-size: 16.5px; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 26px 0 8px; }
+  .fact { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+  .fact b { display: block; font-size: 28px; line-height: 1.1; color: var(--navy); font-variant-numeric: tabular-nums; }
+  .fact span { font-size: 13px; color: var(--muted); }
+  .fact.key { border-color: var(--gold); background: var(--gold-bg); }
+
+  section { margin-top: 44px; }
+  h2 { font-size: 23px; color: var(--navy); margin: 0 0 4px; text-wrap: balance; }
+  .sub { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
+  h3 { font-size: 16px; color: var(--navy); margin: 0 0 6px; }
+
+  .langs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .lang { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; min-width: 0; }
+  .lang .ext { font-family: var(--font-mono); font-size: 12.5px; color: var(--teal); }
+  .lang p { margin: 6px 0 0; font-size: 14.5px; }
+  .lang.main { border-top: 3px solid var(--teal); }
+
+  .table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14.5px; }
+  th { background: var(--navy-soft); color: #FFFFFF; text-align: left; font-weight: 600; padding: 10px 14px; font-size: 13.5px; }
+  td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: color-mix(in srgb, var(--bg) 60%, var(--surface)); }
+  td code, p code, li code { font-family: var(--font-mono); font-size: 12.5px; background: var(--teal-bg); color: var(--ink); padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+  .ver { font-family: var(--font-mono); font-size: 12.5px; color: var(--teal); white-space: nowrap; }
+  .num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+
+  .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+  .proj { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .proj .kind { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--teal); }
+  .proj h3 { font-size: 18px; margin: 0; }
+  .proj p { margin: 0; font-size: 14.5px; color: var(--muted); }
+  .proj dl { margin: 4px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 13.5px; }
+  .proj dt { color: var(--muted); }
+  .proj dd { margin: 0; overflow-wrap: anywhere; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .chip { font-size: 12px; border: 1px solid var(--teal); color: var(--teal); border-radius: 9999px; padding: 2px 10px; }
+
+  .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; counter-reset: step; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; position: relative; min-width: 0; }
+  .step::before { counter-increment: step; content: counter(step); display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 9999px; background: var(--teal); color: var(--head-ink); font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .step b { display: block; color: var(--navy); font-size: 14.5px; }
+  .step span { font-size: 13.5px; color: var(--muted); }
+
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; min-width: 0; }
+  .box ul { margin: 6px 0 0; padding-left: 18px; }
+  .box li { margin: 4px 0; font-size: 14.5px; }
+
+  .note { background: var(--teal-bg); border-left: 4px solid var(--teal); border-radius: 6px; padding: 12px 16px; margin-top: 14px; font-size: 14.5px; }
+  footer { margin-top: 52px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 480px) { body { font-size: 15px; } .fact b { font-size: 24px; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Aastrika test automation · as of October 2026</p>
+    <h1>What the automation is built with</h1>
+    <p class="lede">Every language, framework, tool and service used to automate testing of the Sphere, e-Kshamata and CBP web portals. Versions come from each project's own setup files.</p>
+  </header>
+
+  <div class="facts" aria-label="Key figures">
+    <div class="fact"><b>3</b><span>web automation projects</span></div>
+    <div class="fact key"><b>84</b><span>test files across all projects</span></div>
+    <div class="fact"><b>3</b><span>environments: production, staging, UAT</span></div>
+    <div class="fact"><b>3</b><span>browsers: Chrome, Firefox, Safari (WebKit)</span></div>
+    <div class="fact"><b>7</b><span>GitHub Actions workflows</span></div>
+  </div>
+
+  <section id="languages">
+    <h2>Languages</h2>
+    <p class="sub">One main language for the tests, plus the supporting formats every project needs.</p>
+    <div class="langs">
+      <div class="lang main">
+        <h3>TypeScript</h3>
+        <div class="ext">.ts · TypeScript 5.x</div>
+        <p>All test files, page objects, shared helpers, API clients and the login and translation helpers. Typed code catches mistakes before a test even runs.</p>
+      </div>
+      <div class="lang main">
+        <h3>JavaScript (Node.js)</h3>
+        <div class="ext">.mjs · ES modules</div>
+        <p>The terminal menus (<code>npm run go</code>), environment comparisons, report builders, the daily summary and helper scripts.</p>
+      </div>
+      <div class="lang">
+        <h3>YAML</h3>
+        <div class="ext">.yml</div>
+        <p>GitHub Actions workflows: schedules, environment choices, secrets and report uploads.</p>
+      </div>
+      <div class="lang">
+        <h3>JSON</h3>
+        <div class="ext">.json</div>
+        <p>Project setup, organisation and profile data, saved login sessions, and the English–Hindi label dictionary.</p>
+      </div>
+      <div class="lang">
+        <h3>HTML and CSS</h3>
+        <div class="ext">.html</div>
+        <p>Branded test reports, environment comparison reports and guides like this one.</p>
+      </div>
+      <div class="lang">
+        <h3>Shell</h3>
+        <div class="ext">Bash · PowerShell</div>
+        <p>Running suites from the terminal on Windows, and the commands inside the GitHub workflows.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>The three projects</h2>
+    <p class="sub">All three web projects share one stack: Playwright with TypeScript.</p>
+    <div class="projects">
+      <article class="proj">
+        <span class="kind">Web portal</span>
+        <h3>Sphere</h3>
+        <p>The largest suite: signup, login, My Courses, course completion, competencies, Account, search, certificates, logged-out access, page timings and an API layer.</p>
+        <dl><dt>Folder</dt><dd>D:\Automation\SphereWebAutomation</dd><dt>Test files</dt><dd>33</dd><dt>Workflows</dt><dd>5</dd></dl>
+        <div class="chips"><span class="chip">Playwright</span><span class="chip">TypeScript</span><span class="chip">API tests</span></div>
+      </article>
+      <article class="proj">
+        <span class="kind">Web portal</span>
+        <h3>e-Kshamata</h3>
+        <p>Organisation-by-organisation checks for 11 organisations, the competency and course climb, forgot password and environment comparisons.</p>
+        <dl><dt>Folder</dt><dd>D:\Automation\EkshamataWebAutomation</dd><dt>Test files</dt><dd>26</dd><dt>Workflows</dt><dd>1</dd></dl>
+        <div class="chips"><span class="chip">Playwright</span><span class="chip">TypeScript</span></div>
+      </article>
+      <article class="proj">
+        <span class="kind">Web portal</span>
+        <h3>CBP</h3>
+        <p>Role-based lifecycle tests, signing in through Sphere. Runs on staging and UAT only, never production.</p>
+        <dl><dt>Folder</dt><dd>D:\Automation\CBPAutomation</dd><dt>Test files</dt><dd>25</dd><dt>Workflows</dt><dd>1</dd></dl>
+        <div class="chips"><span class="chip">Playwright</span><span class="chip">TypeScript</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="frameworks">
+    <h2>Test frameworks and libraries</h2>
+    <p class="sub">The packages each project installs. Versions are the ones in the projects' setup files.</p>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Tool</th><th>Version</th><th>What it does here</th><th>Used in</th></tr></thead>
+        <tbody>
+          <tr><td><b>Playwright Test</b></td><td class="ver">1.59.1 (CBP 1.61.1)</td><td>Drives the browsers, waits for pages, takes screenshots and videos, and also calls the portal APIs directly.</td><td>All three web projects</td></tr>
+          <tr><td><b>TypeScript</b></td><td class="ver">5.x</td><td>The language of the tests; <code>tsc</code> checks them before they run.</td><td>All projects</td></tr>
+          <tr><td><b>ts-node / tsx</b></td><td class="ver">10.9 / 4.16</td><td>Run TypeScript files directly without a build step.</td><td>CBP</td></tr>
+          <tr><td><b>dotenv</b></td><td class="ver">16–17</td><td>Loads environment addresses, accounts and tokens from a local <code>.env</code> file.</td><td>All projects</td></tr>
+          <tr><td><b>cross-env</b></td><td class="ver">10.1</td><td>Sets the environment, for example <code>BASE_URL</code>, the same way on Windows and Linux.</td><td>All web projects</td></tr>
+          <tr><td><b>ExcelJS</b> and <b>SheetJS (xlsx)</b></td><td class="ver">4.4 / 0.18</td><td>Write the Excel test reports and read test-case sheets.</td><td>Sphere, e-Kshamata</td></tr>
+          <tr><td><b>easy-yopmail</b></td><td class="ver">5.2</td><td>Reads one-time passwords from YOPmail test inboxes, with a browser-based fallback.</td><td>Sphere web</td></tr>
+          <tr><td><b>Nodemailer</b></td><td class="ver">9.0</td><td>Optional email alerts from the production monitor. GitHub's own emails are used instead today.</td><td>Sphere web</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="where">
+    <h2>Where the tests run</h2>
+    <div class="two">
+      <div class="box">
+        <h3>Browsers and devices</h3>
+        <ul>
+          <li><b>Chrome (Chromium)</b> for every web suite</li>
+          <li><b>Firefox</b> and <b>WebKit (Safari)</b> for a cross-browser set: public pages, search, logged-out access, unhappy paths</li>
+          <li><b>Phone and tablet screen sizes</b> (390 × 844, 768 × 1024) inside the browser</li>
+          <li><b>Simulated slow 3G</b> through Chrome DevTools for page-load timings</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Environments</h3>
+        <ul>
+          <li><b>Production</b>: sphere, ekshamata .aastrika.org</li>
+          <li><b>Staging</b>: portal-staging, ekshamata-staging</li>
+          <li><b>UAT</b>: uat, ekshamata-uat, cbp-uat</li>
+          <li><b>Localhost</b> (port 3000), a copy of production for local work</li>
+        </ul>
+        <p class="note" style="margin-top:12px">Each environment has its own backend, so test accounts are created separately on each one. The environment is picked with one setting, <code>BASE_URL</code>, or from the terminal menu.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="testing">
+    <h2>Kinds of testing covered</h2>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Kind</th><th>How it is done</th></tr></thead>
+        <tbody>
+          <tr><td><b>End-to-end user journeys</b></td><td>One new user signs up, then goes through My Courses, course completion, competencies and Account, all in one run.</td></tr>
+          <tr><td><b>API testing</b></td><td>Calls the portal's Sunbird and Keycloak APIs directly: creating users, assigning roles, enrolments, progress, passbook and answer keys.</td></tr>
+          <tr><td><b>Checking results, not just screens</b></td><td>Compares what the page shows with what the API returned (search results, course completion, certificates).</td></tr>
+          <tr><td><b>Unhappy paths</b></td><td>Wrong password, wrong OTP, unregistered email, duplicate signup and forgot-password errors.</td></tr>
+          <tr><td><b>Access control</b></td><td>Private pages and APIs are opened with no login to make sure nothing private leaks.</td></tr>
+          <tr><td><b>Environment comparison</b></td><td>Production compared with staging or UAT, side by side: course counts, organisation content and page differences.</td></tr>
+          <tr><td><b>Cross-browser</b></td><td>The same tests in Chrome, Firefox and Safari's engine.</td></tr>
+          <tr><td><b>Page-load timings</b></td><td>Time to main content on a normal and a slow 3G connection, recorded to a CSV after every run.</td></tr>
+          <tr><td><b>Production monitoring</b></td><td>A small check of login and the signed-in app, three times a day, on production and UAT.</td></tr>
+          <tr><td><b>Two languages</b></td><td>Every label check accepts English or Hindi, using the portal's own translation file.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="services">
+    <h2>Outside services</h2>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Service</th><th>Why it is needed</th></tr></thead>
+        <tbody>
+          <tr><td><b>GitHub</b></td><td>Stores all three projects and runs them automatically with GitHub Actions.</td></tr>
+          <tr><td><b>YOPmail</b></td><td>Free public inboxes for test accounts, so the tests can read signup and login OTPs.</td></tr>
+          <tr><td><b>Sunbird and Keycloak APIs</b></td><td>The portals' own backend, used to create test users, set roles and check progress and certificates.</td></tr>
+          <tr><td><b>Google Gemini</b></td><td>A fallback that answers competency quiz questions when a quiz's answer key is unavailable.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="ci">
+    <h2>Running on its own: GitHub Actions</h2>
+    <p class="sub">Seven workflows run the suites without anyone at a keyboard. Results arrive as GitHub's notification emails.</p>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Workflow</th><th>Project</th><th>When it runs</th></tr></thead>
+        <tbody>
+          <tr><td><code>env-compare-daily.yml</code></td><td>Sphere</td><td>Every day: tests and signup on each environment, then the comparison and one combined report</td></tr>
+          <tr><td><code>prod-monitor.yml</code></td><td>Sphere</td><td>Three times a day on production and UAT</td></tr>
+          <tr><td><code>staging-deploy-tests.yml</code></td><td>Sphere</td><td>After a staging or UAT deployment, or by hand</td></tr>
+          <tr><td><code>prod-deploy-tests.yml</code></td><td>Sphere</td><td>After a production deployment, or by hand</td></tr>
+          <tr><td><code>regression.yml</code></td><td>Sphere</td><td>By hand, for a full regression after a release</td></tr>
+          <tr><td><code>daily.yml</code></td><td>e-Kshamata</td><td>Every day: journey, organisation checks and comparison</td></tr>
+          <tr><td><code>daily-lifecycle.yml</code></td><td>CBP</td><td>Every day on staging; UAT when chosen</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Manual runs offer an <b>Environments</b> choice (production only, production + staging, UAT only, or all three). Passwords and tokens live in GitHub Secrets, never in the code. Reports are kept for 90 days and can be copied to the PC with <code>npm run reports:pull</code>.</p>
+  </section>
+
+  <section id="reports">
+    <h2>Reports</h2>
+    <div class="two">
+      <div class="box">
+        <h3>After every run</h3>
+        <ul>
+          <li>Playwright's HTML report, with screenshots, videos and step traces for failures</li>
+          <li>A branded HTML report and a matching Excel workbook (results, steps, console output)</li>
+          <li>Environment comparison reports in HTML and PDF</li>
+          <li>Page-load timings in <code>test-reports/page-timings.csv</code></li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Daily, from GitHub</h3>
+        <ul>
+          <li>One combined summary of every job and environment</li>
+          <li>Headline results shown as notices on the run, so they appear in GitHub's email</li>
+          <li>A list of the differences found between environments</li>
+          <li>A record of every test account created</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="dev">
+    <h2>Tools used to build it</h2>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Tool</th><th>Version</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><b>Visual Studio Code</b></td><td class="ver">—</td><td>Editor for all the projects</td></tr>
+          <tr><td><b>Claude Code</b></td><td class="ver">—</td><td>AI coding assistant: writing and reviewing tests, analysing failures, building reports and documents</td></tr>
+          <tr><td><b>Node.js</b> and <b>npm</b></td><td class="ver">20.20.1</td><td>Runs every web test, script and report</td></tr>
+          <tr><td><b>Git</b> and <b>GitHub CLI</b> (<code>gh</code>)</td><td class="ver">2.54</td><td>Version control, pushing code, reading workflow runs</td></tr>
+          <tr><td><b>Playwright codegen</b></td><td class="ver">1.59.1</td><td>Records a flow in the browser as a starting point for a new test</td></tr>
+          <tr><td><b>Windows 11</b> with Git Bash and PowerShell</td><td class="ver">—</td><td>The development machine</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="design">
+    <h2>How the code is organised</h2>
+    <div class="two">
+      <div class="box">
+        <h3>Shared building blocks</h3>
+        <ul>
+          <li><b>Page objects</b> for screens like the course player</li>
+          <li><b>Fixtures</b> that log in once and hand every test a signed-in browser</li>
+          <li><b>Helpers</b> for login, OTP reading, signup, profile forms and translation</li>
+          <li><b>An organisation registry</b> with each organisation's roles and language</li>
+          <li><b>An API client</b> to create users and check progress directly</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Ways to run it</h3>
+        <ul>
+          <li><code>npm run go</code>: a terminal menu to pick the environment and tests</li>
+          <li><code>npm run compare</code>: compare two environments side by side</li>
+          <li><code>npm run forgot</code>: reset a test account's password</li>
+          <li><code>npm run test:browsers</code>: Firefox and Safari runs</li>
+          <li><code>npm run i18n:update</code>: refresh the Hindi label dictionary</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow">
+    <h2>What a full run does</h2>
+    <div class="flow">
+      <div class="step"><b>Pick an environment</b><span>Production, staging or UAT, from the menu or GitHub</span></div>
+      <div class="step"><b>Create a new user</b><span>Signup with a YOPmail address, OTP read automatically</span></div>
+      <div class="step"><b>Walk the journey</b><span>My Courses, finish a course, climb competency levels, Account</span></div>
+      <div class="step"><b>Check the records</b><span>Passbook, enrolments and certificates confirmed through the API</span></div>
+      <div class="step"><b>Report</b><span>HTML, Excel and a GitHub email with the headline results</span></div>
+    </div>
+  </section>
+
+  <footer>Figures from the project files on the development machine, October 2026. Test file counts are the web spec files; browser versions follow the installed Playwright release.</footer>
+</div>

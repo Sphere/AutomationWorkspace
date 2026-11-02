@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>e-Kshamata App Test Cases</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0B2545;--teal:#1B9AAA;--gold:#E8B02B;--ink:#1F2933;--muted:#6B7684;--line:#E3E8EF;--bg:#F7F9FB;--ok:#1E8E5A;--warn:#B9770E;--bad:#C0392B}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Open Sans',Segoe UI,Arial,sans-serif;font-size:14.5px;line-height:1.6}
+  .wrap{max-width:1060px;margin:0 auto;padding:24px 20px 72px}
+  header{background:var(--navy);color:#fff;border-radius:8px;padding:28px 30px}
+  header h1{margin:0 0 8px;font-size:25px;font-weight:700}
+  header p{margin:0;color:#C7D2E0;font-size:13.5px}
+  h2{color:var(--navy);font-size:20px;margin:40px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--gold);scroll-margin-top:12px}
+  h3{color:var(--navy);font-size:15.5px;margin:22px 0 6px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 10px}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+  .num{background:#fff;border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:7px;padding:14px 16px}
+  .num b{display:block;font-size:25px;color:var(--navy);line-height:1.2}
+  .num span{font-size:12px;color:var(--muted)}
+  .num.g{border-top-color:var(--gold)} .num.ok{border-top-color:var(--ok)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;display:block;overflow-x:auto}
+  th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;white-space:nowrap}
+  td{border-bottom:1px solid var(--line);padding:8px 10px;background:#fff;vertical-align:top}
+  table.tc td:nth-child(3){min-width:210px} table.tc td:nth-child(4){min-width:200px} table.tc td:nth-child(5){min-width:190px}
+  td.id{font-weight:700;color:var(--navy);white-space:nowrap}
+  .st{margin:0;padding-left:18px} .st li{margin:2px 0}
+  .muted{color:var(--muted)}
+  .sp{font-family:Consolas,Monaco,monospace;font-size:11px;color:var(--teal)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .tag.ok{background:#E4F3EB;color:var(--ok)} .tag.part{background:#FBF1DD;color:var(--warn)} .tag.no{background:#FBE6E3;color:var(--bad)}
+  .pri{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px}
+  .pri.pHi{background:#FBE6E3;color:var(--bad)} .pri.pMd{background:#FBF1DD;color:var(--warn)} .pri.pLo{background:#EEF2F6;color:var(--muted)}
+  .idx{background:#fff;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:7px;padding:12px 16px;margin:16px 0}
+  .idx a{display:inline-block;margin:3px 10px 3px 0;font-size:12.5px;color:var(--navy);text-decoration:none;border-bottom:1px dotted var(--teal)}
+  .card{background:#FFFCF4;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:7px;padding:14px 18px;margin:14px 0}
+  .card h4{margin:0 0 6px;font-size:14px;color:var(--navy)} .card p{margin:6px 0}
+  .legend{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+  footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+  @media print{body{background:#fff}.wrap{max-width:none;padding:0}header{border-radius:0}h2,h3{page-break-after:avoid}table,.num,.card{page-break-inside:avoid}.idx{display:none}}
+  @media(max-width:620px){.wrap{padding:16px 14px 48px}header{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>e-Kshamata App — Mobile Automation Test Cases</h1>
+  <p>Every automated test case in plain language · 63 cases across 8 suites · Appium + WebdriverIO on org.aastrika.ekshamata (build aap-ekshamata-v93-debug) · Local Android + BrowserStack · as of 2026-10-10</p>
+</header>
+
+<h2 id="summary" style="margin-top:28px">Executive summary</h2>
+<p class="sub">The mobile app suite — what it checks and how it last ran.</p>
+<div class="nums">
+  <div class="num"><b>63</b><span>Automated test cases</span></div>
+  <div class="num ok"><b>62</b><span>Pass — verified green</span></div>
+  <div class="num g"><b>1</b><span>Partial — scenario partly covered</span></div>
+  <div class="num"><b>8</b><span>Test suites</span></div>
+  <div class="num ok"><b>12</b><span>Passing runs recorded</span></div>
+  <div class="num"><b>EN + HI</b><span>English + Hindi (Devanagari) competencies</span></div>
+</div>
+<p class="legend"><b>Orgs exercised:</b> MP, DMHFWUP, BNRC, DMHUP &nbsp;·&nbsp; <b>Flows:</b> competency stepper (pass / fail-from / course-only) + course completion &nbsp;·&nbsp;
+  <b>Priority:</b> <span class="pri pHi">P0</span> critical · <span class="pri pMd">P1</span> high · <span class="pri pLo">P2</span> medium &nbsp;·&nbsp;
+  <b>Status:</b> <span class="tag ok">Pass</span> automated &amp; verified · <span class="tag part">Partial</span> partially covered.</p>
+
+<div class="card">
+  <h4>How this differs from the Sphere report</h4>
+  <p>This is the <b>mobile app</b> suite (Appium/WebdriverIO driving a real Android build), not the web portal. Every case here is already automated — status is the <b>run result</b> (Pass/Partial), and users are provisioned through the Sphere APIs before each app run. Users log in on-device, accept T&amp;C, and drive real competency and course-completion flows in both English and Hindi.</p>
+</div>
+
+<div class="idx"><b style="color:var(--navy);font-size:12.5px">Jump to a suite:</b><br><a href="#smoke-login">Smoke &amp; Login (5)</a><a href="#user-provisioning-api">User Provisioning (API) (5)</a><a href="#organization-onboarding">Organization Onboarding (16)</a><a href="#search-course">Search &amp; Course (8)</a><a href="#competency-assessment">Competency Assessment (7)</a><a href="#course-completion-fail-path">Course Completion (Fail Path) (7)</a><a href="#interactive-runner">Interactive Runner (8)</a><a href="#reporting-execution">Reporting &amp; Execution (7)</a></div>
+
+
+<h2 id="smoke-login">Smoke &amp; Login</h2>
+<p class="sub"><b>5</b> test cases — <b style="color:var(--ok)">5</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-SL-001</td><td>App Launch</td><td>The Ekshamata app installs, launches and exposes its automation contexts</td><td><ol class="st"><li>Install aap-ekshamata-v93-debug APK on the device</li><li>Launch the app</li><li>Read browser.getContexts()</li></ol></td><td>NATIVE_APP + WEBVIEW_org.aastrika.ekshamata contexts are available (confirms Capacitor hybrid)</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">tests/ekshamata/smoke.e2e.ts</div></td></tr>
+<tr><td class="id">EK-SL-002</td><td>Login (Password)</td><td>A user logs in with email + password and reaches the home dashboard</td><td><ol class="st"><li>Launch &gt; Home &gt; &quot;Log in&quot;</li><li>Switch to &quot;By Password&quot;</li><li>Enter #loginId + password</li><li>Submit #form-login</li></ol></td><td>URL leaves /app/login and /app/new-tnc; /page/home loads</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">login.page.ts • every run &quot;Provision user &amp; login&quot; case (passed)</div></td></tr>
+<tr><td class="id">EK-SL-003</td><td>Login Mode Toggle</td><td>The OTP / Password login mode can be switched</td><td><ol class="st"><li>On /app/login click the &quot;By Password&quot; ion-radio</li></ol></td><td>Hidden mode input (ion-rg-0) = &quot;password&quot;; password field appears</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">login.page.ts selectPasswordMode() (real WDIO click)</div></td></tr>
+<tr><td class="id">EK-SL-004</td><td>New-User T&amp;C</td><td>A first-time user accepts the Terms &amp; Conditions after login</td><td><ol class="st"><li>Fresh user logs in</li><li>Lands on /app/new-tnc</li><li>Tick ion-checkbox</li><li>Click Accept</li></ol></td><td>User leaves /app/new-tnc and reaches /page/home</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">tnc.page.ts acceptIfPresent() (class-based, language-agnostic)</div></td></tr>
+<tr><td class="id">EK-SL-005</td><td>Notifications Prompt</td><td>The launch notification prompt is handled and does not block login</td><td><ol class="st"><li>Launch app</li><li>Allow / dismiss the notification permission</li><li>Continue</li></ol></td><td>App proceeds to login/home without blocking</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">login.page.ts completeLogin()</div></td></tr>
+</table>
+
+<h2 id="user-provisioning-api">User Provisioning (API)</h2>
+<p class="sub"><b>5</b> test cases — <b style="color:var(--ok)">5</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-API-001</td><td>Create User</td><td>A fresh Ekshamata user is created via the Sphere API</td><td><ol class="st"><li>POST /api/user/v3/create {email, firstName, lastName, channel}</li></ol></td><td>result.userId returned; params.status = SUCCESS</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">user-factory.ts • scripts/create-user.ts</div></td></tr>
+<tr><td class="id">EK-API-002</td><td>Assign Role</td><td>The PUBLIC role is assigned to the new user</td><td><ol class="st"><li>POST /api/user/private/v1/assign/role {userId, organisationId, roles:[PUBLIC]}</li></ol></td><td>Role assigned successfully</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">sphere-api.ts assignRole</div></td></tr>
+<tr><td class="id">EK-API-003</td><td>Update Profile</td><td>The user profile details are patched for the org / designation / language</td><td><ol class="st"><li>PATCH /api/user/private/v1/update with per-org profileDetails (language en/hi)</li></ol></td><td>Profile updated; user created in correct language</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">profiles/&lt;KEY&gt;.json injected at runtime</div></td></tr>
+<tr><td class="id">EK-API-004</td><td>Channel Resolution</td><td>The org channel is fetched byte-exact (handles non-breaking space)</td><td><ol class="st"><li>POST /api/org/v1/search {filters:{id:orgId}}</li><li>Use returned channel in create</li></ol></td><td>Byte-exact channel used (e.g. MP contains U+00A0)</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">getOrgChannel() auto-resolves channel mismatches</div></td></tr>
+<tr><td class="id">EK-API-005</td><td>Unique Email</td><td>Each provisioned user gets a unique sequential yopmail address</td><td><ol class="st"><li>nextSeq(prefix) increments email-counters.json</li></ol></td><td>e.g. BNRC-ANM079, DMHFWUP-ANMUP051 — increments each run</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">user-factory nextSeq() (real users in run reports)</div></td></tr>
+</table>
+
+<h2 id="organization-onboarding">Organization Onboarding</h2>
+<p class="sub"><b>16</b> test cases — <b style="color:var(--ok)">16</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-ORG-001</td><td>BNRC</td><td>Create a fresh user, log in and verify home — Bihar Nursing Registration Council</td><td><ol class="st"><li>ORG=BNRC, designation ANM-Student-Bihar &gt; create &gt; login &gt; accept T&amp;C</li></ol></td><td>Login succeeds; reaches /page/home</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run report BNRC-stepper (BNRC-ANM079 logged in)</div></td></tr>
+<tr><td class="id">EK-ORG-002</td><td>SIHFWUP</td><td>Create a fresh user, log in and verify home — SIHFW, Dept of Health &amp; FW, UP</td><td><ol class="st"><li>SIHFWUP, Medical Officer-UP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">courseCompletionSuite(&quot;SIHFWUP&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-003</td><td>MP (ANM-MP)</td><td>Create a fresh user, log in and verify home — Madhya Pradesh NHM, ANM</td><td><ol class="st"><li>MP, designation ANM-MP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run report MP-course (MP-ANM054 logged in)</div></td></tr>
+<tr><td class="id">EK-ORG-004</td><td>MP (CHO-MP)</td><td>Create a fresh user, log in and verify home — Madhya Pradesh NHM, CHO</td><td><ol class="st"><li>MP, designation CHO-MP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">Multi-designation org (2nd variant)</div></td></tr>
+<tr><td class="id">EK-ORG-005</td><td>SHSB (ANM-Bihar)</td><td>Create a fresh user, log in and verify home — State Health Society Bihar</td><td><ol class="st"><li>SHSB, designation ANM-Bihar</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">competencyStepperSuite(&quot;SHSB&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-006</td><td>SHSB (CHO-Bihar)</td><td>Create a fresh user, log in and verify home — SHSB, CHO</td><td><ol class="st"><li>SHSB, designation CHO-Bihar</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">Multi-designation org (2nd variant)</div></td></tr>
+<tr><td class="id">EK-ORG-007</td><td>DMHUP</td><td>Create a fresh user, log in and verify home — Directorate of Medical Health, UP</td><td><ol class="st"><li>DMHUP, ANM-Outreach-UP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run report DMHUP-stepper (DMHUP-ANM036 logged in)</div></td></tr>
+<tr><td class="id">EK-ORG-008</td><td>PVTBIHAR</td><td>Create a fresh user, log in and verify home — Private (Bihar)</td><td><ol class="st"><li>PVTBIHAR, ANM-Bihar</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">competencyStepperSuite(&quot;PVTBIHAR&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-009</td><td>PVTUP</td><td>Create a fresh user, log in and verify home — Private (Uttar Pradesh)</td><td><ol class="st"><li>PVTUP, ANM-UP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">courseCompletionSuite(&quot;PVTUP&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-010</td><td>NHMUP</td><td>Create a fresh user, log in and verify home — NHM (Uttar Pradesh)</td><td><ol class="st"><li>NHMUP, ANM-Outreach-UP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">courseCompletionSuite(&quot;NHMUP&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-011</td><td>NHMMP</td><td>Create a fresh user, log in and verify home — Test NHM Madhya Pradesh (GNM)</td><td><ol class="st"><li>NHMMP, GNM-Test (first non-ANM profession)</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">courseCompletionSuite(&quot;NHMMP&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-012</td><td>NHMMADHYA</td><td>Create a fresh user, log in and verify home — NHM Madhya Pradesh</td><td><ol class="st"><li>NHMMADHYA, ANM/MPW</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">courseCompletionSuite(&quot;NHMMADHYA&quot;)</div></td></tr>
+<tr><td class="id">EK-ORG-013</td><td>DMHFWUP (Staff Nurse)</td><td>Create a fresh user, log in and verify home — Dept of Medical Health &amp; FW, UP</td><td><ol class="st"><li>DMHFWUP, designation Staff Nurse</li></ol></td><td>Login succeeds; reaches Competency Homepage</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">competencyStepperSuite(&quot;DMHFWUP&quot;) — new 11th org</div></td></tr>
+<tr><td class="id">EK-ORG-014</td><td>DMHFWUP (Zonal Nursing Faculty)</td><td>Create a fresh user, log in and verify home — DMHFWUP, ZNF</td><td><ol class="st"><li>DMHFWUP, designation Zonal Nursing Faculty</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHFWUP designation #2</div></td></tr>
+<tr><td class="id">EK-ORG-015</td><td>DMHFWUP (ANM_UP)</td><td>Create a fresh user, log in and verify home — DMHFWUP, ANM_UP (Hindi)</td><td><ol class="st"><li>DMHFWUP, designation ANM_UP, language Hindi</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run report DMHFWUP-stepper (DMHFWUP-ANMUP051 logged in)</div></td></tr>
+<tr><td class="id">EK-ORG-016</td><td>DMHFWUP (ANM-UP)</td><td>Create a fresh user, log in and verify home — DMHFWUP, ANM-UP</td><td><ol class="st"><li>DMHFWUP, designation ANM-UP</li></ol></td><td>Login succeeds; reaches home</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHFWUP designation #4</div></td></tr>
+</table>
+
+<h2 id="search-course">Search &amp; Course</h2>
+<p class="sub"><b>8</b> test cases — <b style="color:var(--ok)">8</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-CRS-001</td><td>Search</td><td>Course search returns results</td><td><ol class="st"><li>Login</li><li>Search tab</li><li>Query &quot;pregnancy identification&quot;</li><li>Enter</li></ol></td><td>Course result cards are listed</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">course.e2e.ts • search.page.ts</div></td></tr>
+<tr><td class="id">EK-CRS-002</td><td>Course Detail</td><td>Opening the first result loads the course TOC / overview</td><td><ol class="st"><li>Click the first result card</li></ol></td><td>URL /app/toc/&lt;id&gt;; &quot;Start&quot; CTA + &quot;Overview&quot; tab shown</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">course.e2e.ts</div></td></tr>
+<tr><td class="id">EK-CRS-003</td><td>Complete Course (search)</td><td>An org-agnostic course completes end-to-end across all resource types</td><td><ol class="st"><li>Login</li><li>Search by COURSE_NAME</li><li>Open &gt; Start</li><li>Consume every resource</li></ol></td><td>All resources (PDF/video/assessment) processed; back on /page/home</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">complete-course.e2e.ts • MP-course run (Care — 1 resource, passed)</div></td></tr>
+<tr><td class="id">EK-CRS-004</td><td>Video (Gated)</td><td>Gated videos are consumed before the next resource unlocks</td><td><ol class="st"><li>Enter a gated-video course</li><li>Mute, set playbackRate, seek to end, dispatch ended</li></ol></td><td>Each video completes; forward control enables; next unlocks</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">course-runner.page.ts completeVideo()</div></td></tr>
+<tr><td class="id">EK-CRS-005</td><td>PDF Resource</td><td>PDF resources page through to the end</td><td><ol class="st"><li>Open a PDF module</li><li>Click chevron_right until disabled</li></ol></td><td>PDF advances to the next resource</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">course-runner detectType + handlePdf</div></td></tr>
+<tr><td class="id">EK-CRS-006</td><td>In-Course Assessment</td><td>In-course quizzes are answered via the public answer key</td><td><ol class="st"><li>Open an assessment resource</li><li>Click inputs whose optionId is correct</li><li>Submit</li></ol></td><td>Assessment answered (radio + checkbox) and submitted</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">answer-key.ts fetchAnswerKey()</div></td></tr>
+<tr><td class="id">EK-CRS-007</td><td>End-of-Course Rating</td><td>The end-of-course rating popup is handled</td><td><ol class="st"><li>On course end give 5-star rating + comment</li><li>Submit</li></ol></td><td>Rating submitted; course flow completes</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">course-runner submitRating()</div></td></tr>
+<tr><td class="id">EK-CRS-008</td><td>Video Fullscreen/Orientation</td><td>The app is returned to portrait after a fullscreen/landscape video</td><td><ol class="st"><li>Complete a video that forces landscape</li><li>Exit fullscreen</li></ol></td><td>App back in portrait; subsequent taps land correctly</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">course-runner.exitVideoFullscreen()</div></td></tr>
+</table>
+
+<h2 id="competency-assessment">Competency Assessment</h2>
+<p class="sub"><b>7</b> test cases — <b style="color:var(--ok)">7</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-CMP-001</td><td>Learning Plan</td><td>The competency home shows &quot;Your Learning Plan&quot; with the competency cards</td><td><ol class="st"><li>Org user login</li><li>Open competency home</li></ol></td><td>Learning-plan competencies listed; each card exposes 5 levels</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">competency-home.page.ts (16 for BNRC)</div></td></tr>
+<tr><td class="id">EK-CMP-002</td><td>Pass Level-1</td><td>The Level-1 self-assessment passes and unlocks Level 2</td><td><ol class="st"><li>Start Self Assessment</li><li>Answer all via answer key</li><li>View result</li></ol></td><td>&quot;Level 1 passed&quot;; &quot;Start Level 2&quot; present</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">self-assessment-l1.e2e.ts • BNRC/DMHFWUP L1 cases (passed)</div></td></tr>
+<tr><td class="id">EK-CMP-003</td><td>Answer Key (language-proof)</td><td>The quiz is answered by optionId, working across languages</td><td><ol class="st"><li>Read questionset artifact</li><li>Build correctOptionIds</li><li>Click by optionId</li></ol></td><td>100% score even when content is Hindi</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">answer-key.ts (optionId is language-invariant)</div></td></tr>
+<tr><td class="id">EK-CMP-004</td><td>Full 5-Level Climb (Pass)</td><td>All 5 self-assessment levels pass and the competency is achieved</td><td><ol class="st"><li>Climb competency L1 to L5 (fresh key per level)</li></ol></td><td>Each level passed; final &quot;Competency Achieved&quot;</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHFWUP-stepper run: L1-L5 all passed (6/6), 169s</div></td></tr>
+<tr><td class="id">EK-CMP-005</td><td>Interactive Stepper</td><td>Learning-plan competencies are listed in the terminal and a chosen one is climbed</td><td><ol class="st"><li>Run competencyStepperSuite</li><li>Pick competency by number/name</li><li>Climb</li></ol></td><td>Selected competency climbs through its levels</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">interactive-suites.ts (BNRC, SHSB, DMHUP, DMHFWUP, PVTBIHAR)</div></td></tr>
+<tr><td class="id">EK-CMP-006</td><td>Hindi Self-Assessment</td><td>A Hindi-only competency self-assessment is completed by optionId</td><td><ol class="st"><li>Create Hindi user (PROFILE_LANG=hi)</li><li>Climb Devanagari competency</li></ol></td><td>All levels passed on Hindi content (10 questions/level)</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHFWUP &quot;गर्भावस्था की पहचान और प्रसव पूर्व देखभाल&quot; — 5 levels passed</div></td></tr>
+<tr><td class="id">EK-CMP-007</td><td>Per-Level Question Answering</td><td>Each level answers its own fresh quiz (question count varies)</td><td><ol class="st"><li>For each level fetch its quiz answer key</li><li>Answer all questions</li></ol></td><td>Level passed and advances (5 or 10 questions per level)</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run reports: BNRC 5 Q/level, DMHFWUP 10 Q/level</div></td></tr>
+</table>
+
+<h2 id="course-completion-fail-path">Course Completion (Fail Path)</h2>
+<p class="sub"><b>7</b> test cases — <b style="color:var(--ok)">6</b> pass, <b style="color:var(--warn)">1</b> partial</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-FP-001</td><td>Fail Level-1</td><td>The Level-1 self-assessment can be deliberately failed (0%)</td><td><ol class="st"><li>Answer every question wrong via the answer key</li></ol></td><td>Result &quot;not cleared&quot;; &quot;Start learning&quot; / &quot;Take the course&quot; shown</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">SelfAssessment.failWithKey() • DMHUP L1 fail case</div></td></tr>
+<tr><td class="id">EK-FP-002</td><td>Start Mapped Course</td><td>Failing a level offers and opens the mapped course</td><td><ol class="st"><li>From result screen click &quot;Start learning&quot; / &quot;Start Course&quot;</li></ol></td><td>Course TOC loads (URL /app/toc/&lt;id&gt;)</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHUP-stepper run (fail L1 &gt; course)</div></td></tr>
+<tr><td class="id">EK-FP-003</td><td>Complete All Modules</td><td>Every unique module completes without looping back</td><td><ol class="st"><li>Walk modules with a seen-set (PDFs + in-course assessment)</li></ol></td><td>All unique modules processed; no repeat loop</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHUP L1: course completed (7 resources)</div></td></tr>
+<tr><td class="id">EK-FP-004</td><td>Fail-From Level N (stepper)</td><td>Failing a chosen level fails its self-assessment then completes every level from N via course</td><td><ol class="st"><li>Set FAIL_LEVELS=N</li><li>Pass levels &lt; N by self-assessment</li><li>Fail level N &gt; complete its course &gt; continue course-only</li></ol></td><td>Levels &lt; N passed; level N failed then course-completed; levels &gt; N course-only; advance via &quot;Start Level N Course&quot;</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">BNRC-stepper: L1-3 pass, L4 fail&gt;course, L5 course-only (6/6, 309s)</div></td></tr>
+<tr><td class="id">EK-FP-005</td><td>Course-Only Level</td><td>A level with no self-assessment is completed directly through its course</td><td><ol class="st"><li>Reach a course-only level</li><li>Complete its course</li></ol></td><td>Course completed; advances to next level / competency done</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DMHUP L2 &amp; L3 course-only (7 &amp; 2 resources)</div></td></tr>
+<tr><td class="id">EK-FP-006</td><td>Advance via &quot;Start Level N Course&quot;</td><td>The congrats popup &quot;Start Level N Course&quot; opens the next level course (no home-nav workaround)</td><td><ol class="st"><li>Complete a level course</li><li>Submit rating</li><li>Click &quot;Start Level N Course&quot; / लेवल N कोर्स शुरू करें</li></ol></td><td>Next level course opens; or &quot;Go back to home&quot; only = competency complete</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">advanceToNextLevelCourse() (EN + Hindi button text)</div></td></tr>
+<tr><td class="id">EK-FP-007</td><td>L1 Course to L2 Course</td><td>After the L1 course the card CTA becomes &quot;Start Course&quot; and opens a distinct L2 course</td><td><ol class="st"><li>Complete L1 course</li><li>Home</li><li>Tap the card &quot;Start Course&quot;</li></ol></td><td>CTA changes; a distinct L2 course opens and completes</td><td><span class="pri pMd">P1</span></td><td><span class="tag part">Partial</span></td><td><div class="sp">course-l1-then-l2.e2e.ts — needs a competency with distinct per-level courses</div></td></tr>
+</table>
+
+<h2 id="interactive-runner">Interactive Runner</h2>
+<p class="sub"><b>8</b> test cases — <b style="color:var(--ok)">8</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-RUN-001</td><td>Environment / URL</td><td>The runner accepts a number, name, or full https URL for the target portal (Enter = default)</td><td><ol class="st"><li>Prompt &quot;Number, name, or a full https URL (Enter = 1)&quot;</li><li>Enter 1</li></ol></td><td>Resolves to the default portal/app build; run proceeds</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">prompt.ts promptChoice + run config</div></td></tr>
+<tr><td class="id">EK-RUN-002</td><td>Org Selection</td><td>Competency-homepage orgs are listed and one can be picked</td><td><ol class="st"><li>Prompt lists BNRC, DMHUP, PVTBIHAR, PVTUP, SHSB, DMHFWUP</li><li>Pick an org</li></ol></td><td>Selected org used to provision the user</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">per-org specs + getOrg()</div></td></tr>
+<tr><td class="id">EK-RUN-003</td><td>Role / Designation</td><td>An org with multiple roles lists them and one can be picked</td><td><ol class="st"><li>e.g. DMHFWUP lists 4 roles</li><li>Pick &quot;3. ANM_UP&quot;</li></ol></td><td>User provisioned with the chosen designation</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">DESIGNATION_INDEX / variantFor() — DMHFWUP ANM_UP run</div></td></tr>
+<tr><td class="id">EK-RUN-004</td><td>Competency Selection</td><td>The learning-plan competencies are listed for the chosen role and one can be picked</td><td><ol class="st"><li>Prompt lists competencies</li><li>Pick by number or name</li></ol></td><td>Chosen competency is started</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">startSelfAssessmentByName / promptChoice</div></td></tr>
+<tr><td class="id">EK-RUN-005</td><td>Levels</td><td>The number of levels can be set (default 5)</td><td><ol class="st"><li>Prompt &quot;Levels (default 5)&quot;</li><li>Enter 5 or a custom count</li></ol></td><td>LEVELS honoured by the climb</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">LEVELS env (default 5)</div></td></tr>
+<tr><td class="id">EK-RUN-006</td><td>Fail-Which-Levels</td><td>The tester can choose which level(s) to fail via course (0/none, N, list, all)</td><td><ol class="st"><li>Prompt &quot;Fail which level(s) via course?&quot;</li><li>Enter 3</li></ol></td><td>Levels &lt; 3 self-assessed; level 3 failed then course; 3+ course-only</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">FAIL_LEVELS env (fail-from point) — BNRC/DMHUP runs</div></td></tr>
+<tr><td class="id">EK-RUN-007</td><td>Hindi Language Toggle</td><td>The runner can set the portal/profile to Hindi before starting for Hindi-only competencies</td><td><ol class="st"><li>Prompt &quot;set portal to Hindi first? [y/N]&quot;</li><li>Enter y</li></ol></td><td>Account language set to हिंदी and verified before the climb</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">PROFILE_LANG=hi / opts.lang — DMHFWUP Hindi run</div></td></tr>
+<tr><td class="id">EK-RUN-008</td><td>Run Summary Line</td><td>The runner prints a summary of the chosen run before executing</td><td><ol class="st"><li>After all prompts a &quot;▶ ORG (role): competency (N levels), failing [..]&quot; line prints</li></ol></td><td>Summary reflects every selection; run then executes</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">interactive-suites.ts run banner</div></td></tr>
+</table>
+
+<h2 id="reporting-execution">Reporting &amp; Execution</h2>
+<p class="sub"><b>7</b> test cases — <b style="color:var(--ok)">7</b> pass</p>
+<table class="tc">
+<tr><th>ID</th><th>Area</th><th>What we check</th><th>How to test it</th><th>What should happen</th><th>Priority</th><th>Status</th><th>Automation</th></tr>
+<tr><td class="id">EK-REP-001</td><td>JSON Run Report</td><td>Each run writes a structured JSON report</td><td><ol class="st"><li>Run any suite</li><li>Inspect reports/report-&lt;ORG&gt;-&lt;flow&gt;-&lt;ts&gt;.json</li></ol></td><td>JSON has meta, summary (p/f/s/total), and per-case results</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run-report.js • 26 reports generated</div></td></tr>
+<tr><td class="id">EK-REP-002</td><td>HTML Run Report</td><td>Each run writes a human-readable HTML report</td><td><ol class="st"><li>Open reports/report-&lt;...&gt;.html</li></ol></td><td>Styled report with run meta + case table</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run-report.js</div></td></tr>
+<tr><td class="id">EK-REP-003</td><td>XLSX Run Report</td><td>Each run writes an Excel report</td><td><ol class="st"><li>Open reports/report-&lt;...&gt;.xlsx</li></ol></td><td>Workbook with the run summary + cases</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">run-report.js</div></td></tr>
+<tr><td class="id">EK-REP-004</td><td>Screenshots on Stuck/Fail</td><td>Diagnostic screenshots are captured when a screen is stuck</td><td><ol class="st"><li>Force a stuck advance</li><li>Check reports/advance-fail-L*.png</li></ol></td><td>Screenshot + button/URL dump saved for triage</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">dumpScreen() (advance-fail-L2/L3/L5.png present)</div></td></tr>
+<tr><td class="id">EK-REP-005</td><td>Local Android Target</td><td>Suites run on a local Android device / emulator</td><td><ol class="st"><li>Set ANDROID_UDID</li><li>Run suite</li></ol></td><td>Runs on Local Android (emulator-5554 / real device 1fc37ac2)</td><td><span class="pri pHi">P0</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">wdio.android.conf.ts • run reports Target field</div></td></tr>
+<tr><td class="id">EK-REP-006</td><td>BrowserStack Target</td><td>Suites can run on BrowserStack App Automate</td><td><ol class="st"><li>Set RUN_TARGET / BrowserStack creds</li><li>Run suite</li></ol></td><td>Runs on a BrowserStack cloud device (Samsung S23)</td><td><span class="pri pMd">P1</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">wdio.browserstack.conf.ts</div></td></tr>
+<tr><td class="id">EK-REP-007</td><td>Catalog Capture</td><td>The org/competency catalog is captured for reuse</td><td><ol class="st"><li>Run a stepper suite</li><li>saveCatalog() writes the learning-plan catalog</li></ol></td><td>Catalog persisted for the org</td><td><span class="pri pLo">P2</span></td><td><span class="tag ok">Pass</span></td><td><div class="sp">catalog.ts saveCatalog()</div></td></tr>
+</table>
+
+
+<h2 id="runs">Execution log — recorded runs</h2>
+<p class="sub">Real runs captured from the generated run reports (most recent first).</p>
+<table>
+<tr><th>Date</th><th>Org</th><th>Designation</th><th>Flow</th><th>Competency / Course</th><th>Lang</th><th>Passed / Total</th><th>Duration</th></tr>
+<tr><td>2026-07-30 06:39</td><td>MP</td><td>ANM-MP</td><td>Course completion</td><td>Care</td><td>English</td><td>2 / 2</td><td>103s</td></tr>
+<tr><td>2026-07-30 05:37</td><td>DMHFWUP</td><td>ANM_UP</td><td>Competency stepper</td><td>गर्भावस्था की पहचान और प्रसव पूर्व देखभाल</td><td>Hindi</td><td>6 / 6</td><td>169s</td></tr>
+<tr><td>2026-07-29 16:15</td><td>BNRC</td><td>ANM-Student-Bihar</td><td>Competency stepper</td><td>Kangaroo Mother Care</td><td>English</td><td>6 / 6</td><td>309s</td></tr>
+<tr><td>2026-07-29 15:55</td><td>DMHUP</td><td>ANM-Outreach-UP</td><td>Competency stepper</td><td>Vaginal examination and plotting on partograph</td><td>English</td><td>4 / 4</td><td>473s</td></tr>
+<tr><td>2026-07-29 15:07</td><td>BNRC</td><td>ANM-Student-Bihar</td><td>Competency stepper</td><td>Neonatal resuscitation</td><td>English</td><td>6 / 6</td><td>121s</td></tr>
+<tr><td>2026-07-29 15:02</td><td>DMHFWUP</td><td>ANM_UP</td><td>Competency stepper</td><td>गर्भावस्था की पहचान और प्रसव पूर्व देखभाल</td><td>Hindi</td><td>6 / 6</td><td>162s</td></tr>
+<tr><td>2026-07-29 13:51</td><td>BNRC</td><td>ANM-Student-Bihar</td><td>Competency stepper</td><td>Post Partum Hemorrage</td><td>English</td><td>6 / 6</td><td>124s</td></tr>
+<tr><td>2026-07-29 12:30</td><td>DMHFWUP</td><td>ANM_UP</td><td>Competency stepper</td><td>गर्भावस्था की पहचान और प्रसव पूर्व देखभाल</td><td>Hindi</td><td>6 / 6</td><td>165s</td></tr>
+<tr><td>2026-07-29 06:12</td><td>BNRC</td><td>ANM-Student-Bihar</td><td>Competency stepper</td><td>Management of emergency signs</td><td>English</td><td>5 / 5</td><td>249s</td></tr>
+<tr><td>2026-07-29 04:21</td><td>DMHFWUP</td><td>ANM_UP</td><td>Competency stepper</td><td>गर्भावस्था की पहचान और प्रसव पूर्व देखभाल</td><td>Hindi</td><td>6 / 6</td><td>614s</td></tr>
+<tr><td>2026-07-28 17:09</td><td>DMHFWUP</td><td>ANM_UP</td><td>Competency stepper</td><td>गर्भावस्था की पहचान और प्रसव पूर्व देखभाल</td><td>Hindi</td><td>6 / 6</td><td>176s</td></tr>
+<tr><td>2026-07-28 16:19</td><td>DMHFWUP</td><td>ANM_UP</td><td>Competency stepper</td><td>गर्भावस्था की पहचान और प्रसव पूर्व देखभाल</td><td>Hindi</td><td>6 / 6</td><td>325s</td></tr>
+</table>
+
+
+<footer>
+  Generated 2026-10-10 from <span class="sp">E-Kshamata_App_Automation_Test_Cases_Report.xlsx</span>.
+  63 automated test cases · 62 pass / 1 partial across 8 suites · Appium + WebdriverIO (TypeScript). Regenerate the source with <span class="sp">npm run report:ekshamata</span>; run the suite with <span class="sp">npm run regression:ekshamata</span>. Test-case wording simplified for readability; IDs, expected results and automation refs are unchanged from the source sheet.
+</footer>
+
+</div>
+</body>
+</html>

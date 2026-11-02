@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual vs Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B2545; --teal:#1B9AAA; --gold:#E8B02B;
+    --ink:#1F2933; --muted:#6B7684; --line:#E3E8EF; --bg:#F7F9FB;
+    --ok:#1E8E5A; --warn:#B9770E; --bad:#C0392B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:'Open Sans',Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.65}
+  .wrap{max-width:980px;margin:0 auto;padding:24px 20px 72px}
+  header{background:var(--navy);color:#fff;border-radius:8px;padding:28px 30px}
+  header h1{margin:0 0 8px;font-size:26px;font-weight:700}
+  header p{margin:0;color:#C7D2E0;font-size:13.5px}
+  h2{color:var(--navy);font-size:20px;margin:40px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+  h3{color:var(--navy);font-size:16px;margin:24px 0 6px}
+  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+  .num{background:#fff;border:1px solid var(--line);border-top:3px solid var(--teal);border-radius:7px;padding:14px 16px}
+  .num b{display:block;font-size:26px;color:var(--navy);line-height:1.2}
+  .num span{font-size:12px;color:var(--muted)}
+  .num.g{border-top-color:var(--gold)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;display:block;overflow-x:auto}
+  th{background:var(--navy);color:#fff;text-align:left;padding:9px 12px;white-space:nowrap}
+  td{border-bottom:1px solid var(--line);padding:9px 12px;background:#fff;vertical-align:top}
+  td:first-child{font-weight:600;color:var(--navy)}
+  tr.tot td{background:#EEF2F6;font-weight:700}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+  .tag.ok{background:#E4F3EB;color:var(--ok)} .tag.part{background:#FBF1DD;color:var(--warn)} .tag.no{background:#FBE6E3;color:var(--bad)}
+  .card{background:#fff;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:7px;padding:14px 18px;margin:12px 0}
+  .card.gold{border-left-color:var(--gold);background:#FFFCF4}
+  .card h4{margin:0 0 6px;font-size:14.5px;color:var(--navy)}
+  .card p{margin:6px 0}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+  .pane{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+  .pane.m{border-top:3px solid var(--muted)} .pane.a{border-top:3px solid var(--teal)}
+  .pane h4{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .pane .big{font-size:30px;font-weight:700;color:var(--navy);line-height:1.1}
+  .pane ul{margin:10px 0 0;padding-left:18px} .pane li{margin:4px 0;font-size:13.5px}
+  ul{margin:8px 0;padding-left:20px} li{margin:4px 0}
+  .k{font-family:Consolas,Monaco,monospace;font-size:12.5px;background:#EEF2F6;padding:1px 6px;border-radius:4px;color:var(--navy)}
+  footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+  @media print{body{background:#fff}.wrap{max-width:none;padding:0}header{border-radius:0}
+               h2{page-break-after:avoid}.card,.num,table,.pane{page-break-inside:avoid}}
+  @media(max-width:620px){.wrap{padding:16px 14px 48px}header{padding:20px}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Manual Report vs Automation</h1>
+  <p>Aastrika Sphere &amp; e-Kshamata — the documented manual test-case catalogue measured against what the live automation suites now run · as of 2026-10-10</p>
+</header>
+
+<h2>At a glance</h2>
+<p class="sub">Two portals, each with a hand-written manual test-case sheet and a Playwright suite that has since grown well past it.</p>
+<div class="nums">
+  <div class="num"><b>178</b><span>Documented manual test cases (108 Sphere + 70 e-Kshamata)</span></div>
+  <div class="num g"><b>427+</b><span>Automated checks now running on Sphere (+ e-Kshamata data-driven suites)</span></div>
+  <div class="num"><b>59</b><span>Automation spec files (33 Sphere + 26 e-Kshamata)</span></div>
+  <div class="num g"><b>3</b><span>Environments covered — production, staging, UAT</span></div>
+  <div class="num"><b>26</b><span>org × role combinations swept on e-Kshamata</span></div>
+  <div class="num g"><b>2</b><span>languages checked on every label — English &amp; Hindi</span></div>
+</div>
+
+<div class="card gold">
+  <h4>How to read this</h4>
+  <p>The <b>manual report</b> is the enumerated checklist a tester would walk by hand — one row per thing to verify, in one environment, for one user. The <b>automation</b> re-runs those same verifications unattended, then multiplies them across environments, roles, languages and schedules that no one has time to click through manually. The manual sheet is the floor; automation is what is actually running on top of it.</p>
+</div>
+
+<!-- ============================ SPHERE ============================ -->
+<h2>Sphere</h2>
+<p class="sub">Manual catalogue: <span class="k">archive/SphereCase.spec.ts</span> (TC-numbered, manual-style) · Automation: <span class="k">tests/*.spec.ts</span></p>
+
+<div class="two">
+  <div class="pane m">
+    <h4>Manual report</h4>
+    <div class="big">108 <span style="font-size:14px;color:var(--muted);font-weight:400">test cases</span></div>
+    <ul>
+      <li>13 suites, one row per manual step</li>
+      <li>Single environment, single logged-in user</li>
+      <li>English only, one browser</li>
+      <li>Run by hand each release</li>
+    </ul>
+  </div>
+  <div class="pane a">
+    <h4>Automation now</h4>
+    <div class="big">427 <span style="font-size:14px;color:var(--muted);font-weight:400">checks · 33 specs</span></div>
+    <ul>
+      <li>Prod-mirror, staging &amp; UAT in one run</li>
+      <li>Signup → OTP → course → quiz → certificate, end to end</li>
+      <li>English + Hindi labels matched on every check</li>
+      <li>+ a Layer-2 API contract layer (9 checks)</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Suite-by-suite — manual catalogue vs automated spec</h3>
+<table>
+  <tr><th>Area</th><th>Manual TCs</th><th>Automated checks</th><th>Live spec</th><th>Status</th></tr>
+  <tr><td>Public page</td><td>14</td><td>64</td><td>PublicPage.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Login</td><td>13</td><td>27 + 2</td><td>public-login / login-check</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Create account</td><td>8</td><td>21</td><td>create-account.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Private home</td><td>8</td><td>67</td><td>PrivatePage.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Course TOC</td><td>11</td><td>21</td><td>CourseTOC.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Assessment / Quiz</td><td>12</td><td>27 + 1</td><td>positiveflow / CourseComplete</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>My Courses</td><td>5</td><td>49</td><td>Mycourse.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Competency</td><td>9</td><td>14 + 1</td><td>Competency / CompleteCompetency</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Search</td><td>4</td><td>9</td><td>Search.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Account</td><td>16</td><td>68</td><td>Account.spec.ts</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Logout</td><td>4</td><td>2</td><td>LoggedOut.spec.ts</td><td><span class="tag ok">Automated</span></td></tr>
+  <tr><td>Notifications</td><td>4</td><td>—</td><td>covered inside Account/Private</td><td><span class="tag part">Partial</span></td></tr>
+  <tr><td colspan="5" style="background:#fff;border:0;padding-top:10px;font-weight:700;color:var(--navy)">Added by automation — had no manual rows</td></tr>
+  <tr><td>Certificates</td><td>—</td><td>3</td><td>Certificates.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>OTP inbox read</td><td>—</td><td>15</td><td>OTP.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>Role × course matrix</td><td>—</td><td>6</td><td>RoleCourses / Profile/*</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>Unhappy / negative</td><td>—</td><td>8</td><td>Unhappy.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>Forgot password</td><td>—</td><td>1</td><td>forgot-password.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>Performance timings</td><td>—</td><td>2</td><td>Performance.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>Prod smoke (every 15 min)</td><td>—</td><td>3</td><td>monitor/prod-smoke.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>API contract layer</td><td>—</td><td>9</td><td>tests/api/*.spec.ts</td><td><span class="tag ok">New</span></td></tr>
+  <tr><td>SCORM · fast-login · question-match</td><td>—</td><td>7</td><td>SCROM / apiFastLogin / questionMatch</td><td><span class="tag ok">New</span></td></tr>
+  <tr class="tot"><td>Total</td><td>108</td><td>427</td><td>33 spec files</td><td></td></tr>
+</table>
+
+<!-- ============================ EKSHAMATA ============================ -->
+<h2>e-Kshamata</h2>
+<p class="sub">Manual catalogue: <span class="k">test-cases/Ekshamata_MP_PrivatePage_TestCases.xlsx</span> (MP org, private pages, 70 TCs) · Automation: <span class="k">tests/*.spec.ts</span>, data-driven</p>
+
+<div class="two">
+  <div class="pane m">
+    <h4>Manual report</h4>
+    <div class="big">70 <span style="font-size:14px;color:var(--muted);font-weight:400">test cases</span></div>
+    <ul>
+      <li>9 modules · P1 26 · P2 34 · P3 10</li>
+      <li>One org (MP), one user (<span class="k">Mpid003</span>, ANM)</li>
+      <li>Localhost, logged-in private pages only</li>
+      <li>Prepared 2026-07-15, walked by hand</li>
+    </ul>
+  </div>
+  <div class="pane a">
+    <h4>Automation now</h4>
+    <div class="big">26 <span style="font-size:14px;color:var(--muted);font-weight:400">specs, data-driven</span></div>
+    <ul>
+      <li>13 orgs · 26 org × role combinations swept</li>
+      <li>278 fresh learners minted &amp; tracked</li>
+      <li>Full journey: login → course → competency → certificate</li>
+      <li>Prod + staging matrix, English + Hindi</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Module-by-module — manual sheet vs automation coverage</h3>
+<table>
+  <tr><th>Module</th><th>Manual TCs</th><th>Covered by</th><th>Status</th></tr>
+  <tr><td>Header &amp; Navigation</td><td>13</td><td>smoke, ekshamata-clicks, org-content</td><td><span class="tag ok">Automated</span></td></tr>
+  <tr><td>Footer</td><td>6</td><td>smoke, ekshamata-clicks</td><td><span class="tag part">Partial</span></td></tr>
+  <tr><td>Home / Programs</td><td>8</td><td>org-content, competency-course</td><td><span class="tag ok">Automated</span></td></tr>
+  <tr><td>Program Detail</td><td>8</td><td>competency-course, course-complete</td><td><span class="tag ok">Automated</span></td></tr>
+  <tr><td>My Courses</td><td>9</td><td>course-complete, my-courses page</td><td><span class="tag ok">Automated</span></td></tr>
+  <tr><td>Competency</td><td>6</td><td>competency-course, competency-stepper, _discover-competencies</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Account / Profile</td><td>8</td><td>account-verify, account-badge, certificate</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr><td>Course TOC</td><td>9</td><td>course-complete, competency-course</td><td><span class="tag ok">Automated</span></td></tr>
+  <tr><td>Session</td><td>3</td><td>login, orgLoginSuite, forgot-password, role-sweep</td><td><span class="tag ok">Automated+</span></td></tr>
+  <tr class="tot"><td>Total</td><td>70</td><td>26 spec files</td><td></td></tr>
+</table>
+
+<div class="card">
+  <h4>The multiplier the manual sheet can't show</h4>
+  <p>The 70-row sheet is written for <b>one org and one user</b>. The same journey in automation runs for every org in <span class="k">src/config/orgs.ts</span> — BNRC, SIHFWUP, MP, SHSB, DMHUP, PVTBIHAR, PVTUP, NHMUP, NHMMP, NHMMADHYA and more — across <b>26 org × role combinations</b>, each with a freshly provisioned learner, on both production and staging. One manual pass would be 70 checks; the automation's equivalent is that journey repeated dozens of times a day, unattended.</p>
+</div>
+
+<!-- ============================ FIXES ============================ -->
+<h2>Fixes the automation accumulated</h2>
+<p class="sub">Real defects and portal behaviours found once, then handled for good — the reason the automation diverged from a naïve translation of the manual steps.</p>
+<table>
+  <tr><th>What was found</th><th>Portal</th><th>Why a manual pass missed it</th></tr>
+  <tr><td>Course stuck below 100%</td><td>e-Kshamata</td><td>Every module consumed, yet completion never recorded — the post-assessment spans multiple question-sets and the answer key must be merged across them, or most questions go blank.</td></tr>
+  <tr><td>Course stuck at 86%</td><td>Sphere</td><td>Final assessment submitted after a single question; the portal never marked the course done.</td></tr>
+  <tr><td>Badge on prod, not on staging</td><td>e-Kshamata</td><td>Same learner, same course — invisible from the course side where everything looked finished.</td></tr>
+  <tr><td>Certificates listed "1 of N"</td><td>Sphere</td><td>Learner had earned several; the list showed one. A human eye reads "a certificate is there" and moves on.</td></tr>
+  <tr><td>Pages rendered only in Hindi</td><td>Both</td><td>On some orgs labels come back in Hindi only; English-only checks quietly passed over them (110 UAT tests had failed this way until matching went bilingual).</td></tr>
+  <tr><td>Silent login failure</td><td>Sphere</td><td>Bad credentials returned an anonymous session that looked logged in — failures surfaced 20 steps later for unrelated-looking reasons.</td></tr>
+  <tr><td>Signup rejected over 19 chars</td><td>Sphere</td><td>Addresses longer than 19 characters were silently dropped at signup.</td></tr>
+  <tr><td>OTP reader grabbed the year</td><td>Both</td><td>A generic digit-run match picked up "2026" instead of the real OTP; now matched by context.</td></tr>
+  <tr><td>Answer key source 403 for learners</td><td>Sphere</td><td><span class="k">questionset/v1</span> is forbidden to learners; only <span class="k">content/v3/hierarchy</span> works, matched by option text not stem.</td></tr>
+  <tr><td><span class="k">isVisible({timeout})</span> doesn't wait</td><td>Sphere</td><td>Root cause of flaky CI checks — the timeout is ignored, so the check raced the page.</td></tr>
+</table>
+
+<h2>What automation adds beyond the sheet</h2>
+<div class="nums">
+  <div class="num"><b>3 envs</b><span>prod · staging · UAT, every day — the sheet covers one</span></div>
+  <div class="num g"><b>26 roles</b><span>org × role matrix vs the sheet's single user</span></div>
+  <div class="num"><b>EN + HI</b><span>both languages matched on every label</span></div>
+  <div class="num g"><b>7 pipelines</b><span>run on schedule, on release and on deploy — nobody starts them</span></div>
+  <div class="num"><b>Evidence</b><span>HTML + Excel + PDF report, screenshots &amp; downloaded certificates per run</span></div>
+  <div class="num g"><b>Every 15 min</b><span>prod login smoke — an outage is caught before users report it</span></div>
+</div>
+
+<footer>
+  Manual catalogues: Sphere <span class="k">archive/SphereCase.spec.ts</span> (108 TCs) · e-Kshamata <span class="k">test-cases/Ekshamata_MP_PrivatePage_TestCases.xlsx</span> (70 TCs).
+  Automation counts are live <span class="k">test()</span> declarations across <span class="k">tests/</span> (Sphere 427 / 33 specs — excludes in-body <span class="k">test.skip()</span> annotations; e-Kshamata 26 specs, data-driven over 13 orgs). Full line-by-line enumeration: <span class="k">TEST-CASES-Manual-vs-Automation.xlsx</span>.
+  Generated 2026-10-10.
+</footer>
+
+</div>
+</body>
+</html>
